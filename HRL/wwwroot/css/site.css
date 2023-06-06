@@ -1,0 +1,83 @@
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+#Container {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 50px min-content 1fr;
+    grid-gap: 3em;
+}
+
+.Kopfzeile {
+    background-color: tomato;
+    padding: 6px;
+    grid-column: span 2;
+}
+
+#Lagerspiegel {
+    display: grid;
+    grid-gap: 6px 6px;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    padding-left: 6px;
+    height: min-content;
+}
+
+    #Lagerspiegel button {
+        aspect-ratio: 1;
+        border: 1px solid #505050;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 1rem;
+        color: rgb(255, 255, 255);
+    }
+
+        #Lagerspiegel button.Leer {
+            background-color: rgba(80, 80, 80, 0.751);
+        }
+
+        #Lagerspiegel button.Stoerung {
+            background-color: rgba(255, 0, 0, 0.751);
+        }
+
+        #Lagerspiegel button.Belegt {
+            background-color: rgba(25, 195, 79, 0.751);
+        }
+
+#Lagerbestand {
+    position: relative;
+    grid-row: span 2;
+}
+
+#Auftraege {
+    position: relative;
+}
+
+.scrollable {
+    position: absolute;
+    inset: 2.5em 0 0;
+    overflow: scroll;
+}
+
+thead {
+    position: sticky;
+    top: 0;
+}
+
+.popupLarge {
+    position: fixed;
+    color: rgb(255, 255, 255);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 700px;
+    height: 700px;
+    border-radius: 10px;
+    background-color: rgb(51, 51, 51);
+    padding: 20px;
+}

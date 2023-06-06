@@ -1,0 +1,233 @@
+﻿Die Button haben Abstände und sindn nicht gleich breit
+@namespace HRL.Pages
+@page "/LagerplatzPopup"
+@using Microsoft.AspNetCore.Mvc.ViewFeatures
+@using HRL.Components
+@using System.Reflection;
+@using static HRL.Components.LabeledInput
+@using static HRL.Components.LabeledButton
+@inject Blazored.Modal.Services.IModalService Modal
+
+<PageTitle>Lagerplatz Pop-up</PageTitle>
+
+<form>
+    <div style="display:flex; flex-wrap:wrap;">
+        <div style="flex:1; margin-right:10px;">
+            <LabeledInput Label="Transport-ID:"
+                          InputType="InputTypes.Number"
+                          Id="transportUnitId"
+                          ValueInt="@TransportUnitIdValue"
+                          ValueMax="32767"
+                          ValueMin="1"
+                          Required="true"
+                          Readonly="@transportUnitEditValue" />
+
+            <LabeledInput Label="Status:"
+                          InputType="InputTypes.Number"
+                          Id="transportUnitStatus"
+                          ValueInt="@TransportUnitStatusValue"
+                          ValueMax="20"
+                          ValueMin="0"
+                          Required="true"
+                          Readonly="@transportUnitEditValue" />
+
+            <LabeledInput Label="Gewicht:"
+                          InputType="InputTypes.Number"
+                          Id="transportUnitWeight"
+                          ValueInt="@TransportUnitWeightValue"
+                          ValueMax="32767"
+                          ValueMin="1"
+                          Required="true"
+                          Readonly="@transportUnitEditValue"
+                          Suffix="KG" />
+
+            <LabeledInput Label="Priorität:"
+                          InputType="InputTypes.Number"
+                          Id="transportUnitPriority"
+                          ValueInt="@TransportUnitPriorityValue"
+                          ValueMax="99"
+                          ValueMin="0"
+                          Readonly="@transportUnitEditValue" />
+
+            <LabeledInput Label="Inhalt:"
+                          InputType="InputTypes.Text"
+                          Id="transportUnitContent"
+                          ValueString="@TransportUnitContentValue"
+                          ValueMax="10"
+                          Readonly="@transportUnitEditValue" />
+
+            <LabeledInput Label="Anzahl:"
+                          InputType="InputTypes.Number"
+                          Id="transportUnitCount"
+                          ValueInt="@TransportUnitCountValue"
+                          ValueMax="32767"
+                          ValueMin="0"
+                          Readonly="@transportUnitEditValue"
+                          Suffix="Stück" />
+        </div>
+
+        <div style="flex:1;">
+            <LabeledInput Label="Einlager Datum:"
+                          InputType="InputTypes.Date"
+                          Id="transportUnitStorageDate"
+                          ValueDate="@TransportUnitStorageDateValue"
+                          Readonly="@transportUnitEditValue" />
+
+            <LabeledInput Label="Einlager Uhrzeit:"
+                          InputType="InputTypes.Time"
+                          Id="transportUnitStorageTime"
+                          ValueTime="@TransportUnitStorageTimeValue"
+                          Readonly="@transportUnitEditValue" />
+
+            <LabeledInput Label="Einlager Benutzer:"
+                          InputType="InputTypes.Text"
+                          Id="transportUnitStorageUser"
+                          ValueString="@TransportUnitStorageUserValue"
+                          ValueMax="4"
+                          Readonly="@transportUnitEditValue" />
+
+            <LabeledInput Label="Transport Datum:"
+                          InputType="InputTypes.Date"
+                          Id="transportUnitTransportDate"
+                          ValueDate="@TransportUnitTransportDateValue"
+                          Readonly="@transportUnitEditValue" />
+
+            <LabeledInput Label="Transport Uhrzeit:"
+                          InputType="InputTypes.Time"
+                          Id="transportUnitTransportTime"
+                          ValueTime="@TransportUnitTransportTimeValue"
+                          Readonly="@transportUnitEditValue" />
+
+            <LabeledInput Label="Transport Benutzer:"
+                          InputType="InputTypes.Text"
+                          Id="transportUnitTransportUser"
+                          ValueString="@TransportUnitTransportUserValue"
+                          ValueMax="4"
+                          Readonly="@transportUnitEditValue" />
+        </div>
+    </div>
+
+    <div>
+        <LabeledInput Label="Bemerkung:"
+                      InputType="InputTypes.Text"
+                      Id="transportUnitRemark"
+                      ValueString="@TransportUnitRemarkValue"
+                      ValueMax="40"
+                      Readonly="@transportUnitEditValue" />
+    </div>
+
+
+    <!-- Buttons nicht formatiert
+
+        [Anfordern] [Sofot Anfordern] [Editieren] 
+
+        [     Übernehmen     ] [    Abbrechen    ]
+
+        [                Löschen                 ]
+
+
+
+    -->
+    @if (edit)
+    {
+        <LabeledButton ButtonType="ButtonTypes.Button"
+                       ButtonColor="ButtonColors.Green"
+                       Value="@transportUnitAcceptValue"
+                       Label="Übernehmen"
+                       Id="transportUnitAccept" />
+
+        <LabeledButton ButtonType="ButtonTypes.Button"
+                       ButtonColor="ButtonColors.Red"
+                       Value="@transportUnitDeleteValue"
+                       Label="Löschen"
+                       Id="transportUnitDelete" />
+
+        <LabeledButton ButtonType="ButtonTypes.Button"
+                       ButtonColor="ButtonColors.Grey"
+                       Value="@transportUnitCancelValue"
+                       Label="Abbrechen"
+                       Id="transportUnitCancel"
+                       OnSwitchState="@showEdit" />
+    }
+    else
+    {
+
+        <LabeledButton ButtonType="ButtonTypes.Button"
+                       ButtonColor="ButtonColors.Turquoise"
+                       Value="@transportUnitRequestValue"
+                       Label="Anfordern"
+                       Id="transportUnitRequest"
+                       OnSwitchState="@MyOnClick" />
+
+        <LabeledButton ButtonType="ButtonTypes.Button"
+                       ButtonColor="ButtonColors.Blue"
+                       Value="@transportUnitRequestImmediatelyValue"
+                       Label="Sofort Anfordern"
+                       Id="transportUnitRequestImmediately" />
+
+        <LabeledButton ButtonType="ButtonTypes.Button"
+                       ButtonColor="ButtonColors.Yellow"
+                       Value="@transportUnitEditValue"
+                       Label="Bearbeiten"
+                       Id="transportUnitEdit"
+                       OnSwitchState="@showEdit" />
+    }
+
+    <button type="button" class="close" data-dismiss="modal">
+        &times;
+    </button>
+
+
+</form>
+
+@code {
+    public int TransportUnitIdValue { get; set; } = 1;
+    public int TransportUnitStatusValue { get; set; } = 2;
+    public int TransportUnitWeightValue { get; set; } = 3;
+    public int TransportUnitPriorityValue { get; set; } = 4;
+    public string? TransportUnitContentValue { get; set; } = "Kisten";
+    public int TransportUnitCountValue { get; set; } = 5;
+    public DateOnly TransportUnitStorageDateValue { get; set; } = DateOnly.Parse(DateTime.Now.Date.ToString("yyyy-MM-dd"));
+    public TimeOnly TransportUnitStorageTimeValue { get; set; } = TimeOnly.FromDateTime(DateTime.Now);
+    public string? TransportUnitStorageUserValue { get; set; } = "ILRE";
+    public DateOnly TransportUnitTransportDateValue { get; set; } = DateOnly.Parse(DateTime.Now.Date.ToString("yyyy-MM-dd"));
+    public TimeOnly TransportUnitTransportTimeValue { get; set; } = TimeOnly.FromDateTime(DateTime.Now);
+    public string? TransportUnitTransportUserValue { get; set; } = "WADO";
+    public string? TransportUnitRemarkValue { get; set; } = "111222333444555666777888999000";
+
+    public bool transportUnitRequestValue { get; set; }
+    public bool transportUnitRequestImmediatelyValue { get; set; }
+    public bool transportUnitEditValue { get; set; }
+    public bool transportUnitDeleteValue { get; set; }
+    public bool transportUnitAcceptValue { get; set; }
+    public bool transportUnitCancelValue { get; set; }
+    public bool edit = false;
+
+    public void MyOnClick(object sender)
+    {
+        if (sender is LabeledButton labeledButton)
+        {
+            labeledButton.SetButtonColor(ButtonColors.Red);
+            this.StateHasChanged();
+
+        }
+    }
+
+    public void showEdit(object sender)
+    {
+        if (!edit)
+        {
+            edit = true;
+        }
+        else
+        {
+            edit = false;
+        }
+        var LagerplatzPopupModal = Modal.Show<LagerplatzPopup>();
+        LagerplatzPopupModal.Close();
+        this.StateHasChanged();
+
+    }
+
+
+}

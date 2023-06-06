@@ -1,0 +1,65 @@
+﻿@page "/fetchdata"
+
+<PageTitle>Weather forecast</PageTitle>
+
+@using HRL.Database;
+@*@inject WeatherForecastService ForecastService*@
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from a service.</p>
+
+@*@if (forecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Temp. (C)</th>
+                <th>Temp. (F)</th>
+                <th>Summary</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in forecasts)
+            {
+                <tr>
+                    <td>@forecast.Name
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}*@
+
+@code {
+    //private List<HumanDto> forecasts;
+
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    using (var connection = new MYDatebaseContext())
+    //    {
+    //        var human = new Human();
+    //        human.Name = "Max";
+    //        connection.Humanes.Add(human);
+    //        connection.SaveChanges();
+    //    }
+
+    //    using (var connection = new MYDatebaseContext())
+    //    {
+    //        forecasts = new List<HumanDto>();
+    //        int i = 0;
+    //        foreach (var item in connection.Humanes)
+    //        {
+    //            forecasts.Add(new HumanDto()
+    //                {
+    //                    Name = item.Name
+    //                });
+    //        }
+    //    }
+    //}
+}

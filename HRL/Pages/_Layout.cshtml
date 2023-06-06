@@ -1,0 +1,22 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@namespace HRL.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="~/" />
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
+    <link href="css/site.css" rel="stylesheet" />
+    <link href="HRL.styles.css" rel="stylesheet" />
+    <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
+    <linkhref ="_content/Blazored.Modal/blazored-modal.css" rel="stylesheet" />
+</head>
+<body class="bg-dark">
+    @RenderBody()
+    <script src="_framework/blazor.server.js"></script>
+    <scriptsrc ="_content/Blazored.Modal/blazored.modal.js"></script>
+</body>
+</html>

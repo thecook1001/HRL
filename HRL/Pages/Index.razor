@@ -1,0 +1,451 @@
+﻿@namespace HRL.Pages
+@inject IModalService modal
+@page "/"
+<PageTitle>Index</PageTitle>
+
+<div id="Container">
+
+    <div class="Kopfzeile">
+        Logo
+    </div>
+
+    <!-- Darstellung Lagerspiegel -->
+    <div id="Lagerspiegel">
+        <!-- Darstellung Reihe 1 -->
+        <button @onclick="@(()=>modal.Show<LagerplatzPopup>("Details Lagerplatz 0000", new ModalOptions { Class = "popupLarge" }))" id="Fach0000" class="Leer">0000</button>
+        <button @onclick="@(()=>modal.Show<LagerplatzPopup>("Details Lagerplatz 0001", new ModalOptions { Class = "popupLarge" }))" id="Fach0001" class="Belegt">0001</button>
+        <button @onclick="@(()=>modal.Show<LagerplatzPopup>("Details Lagerplatz 0002", new ModalOptions { Class = "popupLarge" }))" id="Fach0002" class="Leer">0002</button>
+        <button @onclick="@(()=>modal.Show<LagerplatzPopup>("Details Lagerplatz 0003", new ModalOptions { Class = "popupLarge" }))" id="Fach0003" class="Leer">0003</button>
+        <button @onclick="@(()=>modal.Show<LagerplatzPopup>("Details Lagerplatz 0004", new ModalOptions { Class = "popupLarge" }))" id="Fach0004" class="Leer">0004</button>
+        <button @onclick="@(()=>modal.Show<LagerplatzPopup>("Details Lagerplatz 0005", new ModalOptions { Class = "popupLarge" }))" id="Fach0005" class="Stoerung">0005</button>
+        <button @onclick="@(()=>modal.Show<LagerplatzPopup>("Details Lagerplatz 0006", new ModalOptions { Class = "popupLarge" }))" id="Fach0006" class="Leer">0006</button>
+        <!-- Darstellung Reihe 2 -->
+        <button @onclick="@(()=>modal.Show<LagerplatzPopup>("Details Lagerplatz 0100", new ModalOptions { Class = "popupLarge" }))" id="Fach0100" class="Leer">0100</button>
+        <button @onclick="@(()=>modal.Show<LagerplatzPopup>("Details Lagerplatz 0101", new ModalOptions { Class = "popupLarge" }))" id="Fach0101" class="Stoerung">0101</button>
+        <button @onclick="@(()=>modal.Show<LagerplatzPopup>("Details Lagerplatz 0102", new ModalOptions { Class = "popupLarge" }))" id="Fach0102" class="Leer">0102</button>
+        <button @onclick="@(()=>modal.Show<LagerplatzPopup>("Details Lagerplatz 0103", new ModalOptions { Class = "popupLarge" }))" id="Fach0103" class="Leer">0103</button>
+        <button @onclick="@(()=>modal.Show<LagerplatzPopup>("Details Lagerplatz 0104", new ModalOptions { Class = "popupLarge" }))" id="Fach0104" class="Belegt">0104</button>
+        <button @onclick="@(()=>modal.Show<LagerplatzPopup>("Details Lagerplatz 0105", new ModalOptions { Class = "popupLarge" }))" id="Fach0105" class="Leer">0105</button>
+        <button @onclick="@(()=>modal.Show<LagerplatzPopup>("Details Lagerplatz 0106", new ModalOptions { Class = "popupLarge" }))" id="Fach0106" class="Leer">0106</button>
+        <!-- Darstellung Reihe 3 -->
+        <button @onclick="@(()=>modal.Show<LagerplatzPopup>("Details Lagerplatz 0200", new ModalOptions { Class = "popupLarge" }))" id="Fach0200" class="Leer">0200</button>
+        <button @onclick="@(()=>modal.Show<LagerplatzPopup>("Details Lagerplatz 0201", new ModalOptions { Class = "popupLarge" }))" id="Fach0201" class="Belegt">0201</button>
+        <button @onclick="@(()=>modal.Show<LagerplatzPopup>("Details Lagerplatz 0202", new ModalOptions { Class = "popupLarge" }))" id="Fach0202" class="Leer">0202</button>
+        <button @onclick="@(()=>modal.Show<LagerplatzPopup>("Details Lagerplatz 0203", new ModalOptions { Class = "popupLarge" }))" id="Fach0203" class="Leer">0203</button>
+        <button @onclick="@(()=>modal.Show<LagerplatzPopup>("Details Lagerplatz 0204", new ModalOptions { Class = "popupLarge" }))" id="Fach0204" class="Leer">0204</button>
+        <button @onclick="@(()=>modal.Show<LagerplatzPopup>("Details Lagerplatz 0205", new ModalOptions { Class = "popupLarge" }))" id="Fach0205" class="Stoerung">0205</button>
+        <button @onclick="@(()=>modal.Show<LagerplatzPopup>("Details Lagerplatz 0206", new ModalOptions { Class = "popupLarge" }))" id="Fach0206" class="Leer">0206</button>
+    </div>
+
+    <div id="Lagerbestand">
+        <div class="d-flex justify-content-between px-2">
+            <h4 class="text-white">Lagerbestand</h4>
+            <input type="text" placeholder="Filter" class="w-25 h-25 me-2 form-control form-control-sm">
+        </div>
+
+        <div class="scrollable">
+            <table class="table table-dark table-striped">
+                <thead>
+                    <tr>
+                        <th>Artikel</th>
+                        <th>Menge</th>
+                        <th>Letzte Änderung</th>
+                        <th>Bemerkung</th>
+                        <th>Position</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="Auftraege">
+        <div class="d-flex justify-content-between px-2">
+            <h4 class="text-white">Aufträge</h4>
+            <input type="text" placeholder="Filter" class="w-25 h-25 me-2 form-control form-control-sm">
+        </div>
+
+        <div class="scrollable">
+            <table class="table table-dark table-striped">
+                <thead>
+                    <tr>
+                        <th>Status</th>
+                        <th>Artikel</th>
+                        <th>Menge</th>
+                        <th>Letzte Änderung</th>
+                        <th>Bemerkung</th>
+                        <th>Position</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Aktiv</td>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Wartet</td>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Wartet</td>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Wartet</td>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Wartet</td>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Wartet</td>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Wartet</td>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Wartet</td>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Wartet</td>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Wartet</td>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Wartet</td>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Wartet</td>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Wartet</td>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Wartet</td>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Wartet</td>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Wartet</td>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                    <tr>
+                        <td>Wartet</td>
+                        <td>Europalette Schokolade</td>
+                        <td>20</td>
+                        <td>15.03.2023</td>
+                        <td>Erdbeere</td>
+                        <td>0104</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@code {
+
+}

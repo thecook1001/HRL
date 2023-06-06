@@ -1,0 +1,210 @@
+﻿@namespace HRL.Components
+@using System.Globalization;
+
+<div class="form-group">
+    <label for="@Id">@Label:</label>
+    <div class="input-group w-30 h-25 me-2">
+        @if (@InputType == InputTypes.Text || @InputType == InputTypes.Email)
+        {
+            <input type="@InputType"
+                   id="@Id"
+                   @bind-value="@ValueString"
+                   maxlength="@ValueMax"
+                   minlength="@ValueMin"
+                   required="@Required"
+                   readonly="@Readonly"
+                   class="form-control" />
+        }
+        else
+        {
+            <input type="@InputType"
+                   id="@Id"
+                   @bind-value="@ValueString"
+                   max="@ValueMax"
+                   min="@ValueMin"
+                   required="@Required"
+                   readonly="@Readonly"
+                   class="form-control" />
+        }
+
+        @if (!string.IsNullOrEmpty(Suffix))
+        {
+            <div class="input-group-append">
+                <span class="input-group-text">@Suffix</span>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    public enum InputTypes
+    {
+        Text,
+        Number,
+        Email,
+        Date,
+        Time
+    }
+
+    [Parameter]
+    public string Id { get; set; } = "Keine ID vergeben";
+
+    [Parameter]
+    public string Label { get; set; } = "Kein Label vergeben";
+
+    [Parameter]
+    public InputTypes InputType { get; set; } = InputTypes.Text;
+
+    [Parameter]
+    public string ValueString { get; set; } = "";
+
+    [Parameter]
+    public int ValueInt
+    {
+        get
+        {
+            if (String.IsNullOrEmpty(ValueString)) ValueString = "0";
+
+            int ValueIntParse;
+            bool ValueIntParseSuccess = int.TryParse(ValueString, out ValueIntParse);
+            if (ValueIntParseSuccess) return ValueIntParse;
+            else
+            {
+                ErrorHandling("LabeldInput ValueInt TryParse string to int");
+                return 0;
+            }
+        }
+        set
+        {
+            ValueString = value.ToString();
+        }
+    }
+
+    [Parameter]
+    public DateOnly ValueDate
+    {
+        get
+        {
+            if (String.IsNullOrEmpty(ValueString))
+                ValueString = "0";
+            if (DateOnly.TryParseExact(ValueString, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateOnly valueDateParse))
+                return valueDateParse;
+            else
+            {
+                ErrorHandling("LabeldInput ValueDate TryParse string to DateOnly");
+                return DateOnly.Parse(DateTime.Now.Date.ToString("yyyy-MM-dd"));
+            }
+        }
+        set
+        {
+            ValueString = value.ToString("yyyy-MM-dd");
+        }
+    }
+
+    [Parameter]
+    public TimeOnly ValueTime
+    {
+        get
+        {
+            if (String.IsNullOrEmpty(ValueString))
+                ValueString = "";
+            if (TimeOnly.TryParse(ValueString, out TimeOnly valueTimeParse))
+                return valueTimeParse;
+            else
+            {
+                ErrorHandling("LabeldInput ValueTime TryParse string to TimeOnly");
+                return TimeOnly.FromDateTime(DateTime.Now);
+            }
+        }
+        set
+        {
+            ValueString = value.ToString();
+        }
+    }
+
+    [Parameter]
+    public string ValueMax { get; set; } = "";
+
+    [Parameter]
+    public string ValueMin { get; set; } = "";
+
+    [Parameter]
+    public bool Required { get; set; }
+
+    [Parameter]
+    public string Suffix { get; set; } = "";
+
+    [Parameter]
+    public bool Readonly { get; set; }
+
+    private void ErrorHandling(string Message)
+    {
+        throw new Exception(Message);
+    }
+
+    protected override void OnInitialized()
+    {
+        switch (InputType)
+        {
+            case InputTypes.Number:
+                {
+                    int.TryParse(ValueMax, out int max);
+                    int.TryParse(ValueMin, out int min);
+                    ValueMax = max.ToString();
+                    ValueMin = min.ToString();
+                    break;
+                }
+
+
+            case InputTypes.Date:
+                {
+                    DateOnly.TryParse(ValueMax, out DateOnly maxDate);
+                    if (String.IsNullOrEmpty(ValueMax))
+                    {
+                        ValueMax = "XXX";
+                    }
+                    else
+                    {
+                        ValueMax = maxDate.ToString();
+                    }
+                    DateOnly.TryParse(ValueMin, out DateOnly minDate);
+                    if (String.IsNullOrEmpty(ValueMin))
+                    {
+                        ValueMin = "XXX";
+                    }
+                    else
+                    {
+                        ValueMin = minDate.ToString();
+                    }
+                    break;
+                }
+
+
+            case InputTypes.Time:
+                {
+                    TimeOnly.TryParse(ValueMax, out TimeOnly maxTime);
+                    if (String.IsNullOrEmpty(ValueMax))
+                    {
+                        ValueMax = "XXX";
+                    }
+                    else
+                    {
+                        ValueMax = maxTime.ToString();
+                    }
+                    TimeOnly.TryParse(ValueMin, out TimeOnly minTime);
+                    if (String.IsNullOrEmpty(ValueMin))
+                    {
+                        ValueMin = "XXX";
+                    }
+                    else
+                    {
+                        ValueMin = minTime.ToString();
+                    }
+                    break;
+                }
+
+        }
+    }
+
+
+}
