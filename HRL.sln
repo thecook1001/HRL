@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRL", "HRL\HRL.csproj", "{8E4AFEFE-1AE0-42DA-B994-5BA42F605A77}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HRL", "HRL\HRL.csproj", "{8E4AFEFE-1AE0-42DA-B994-5BA42F605A77}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRL.S7Connector", "HRL.S7Connector\HRL.S7Connector.csproj", "{D00AE272-988D-4F6B-8596-D2EAE4D1F493}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HRL.S7Connector", "HRL.S7Connector\HRL.S7Connector.csproj", "{D00AE272-988D-4F6B-8596-D2EAE4D1F493}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

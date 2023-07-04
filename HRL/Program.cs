@@ -37,13 +37,13 @@ namespace HRL
             app.MapBlazorHub();
             app.MapFallbackToPage("/_Host");
 
-            using (var dbContext = new HRLContext())
+            /*using (var dbContext = new HRLContext())
             {
                 dbContext.Database.EnsureCreated();
             }
 
             Task.Run(() => new DataCrawler().Crawl());
-
+            */
             app.Run();
 
         }
