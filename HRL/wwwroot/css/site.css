@@ -59,6 +59,11 @@ body {
     position: relative;
 }
 
+#Datenbank {
+    color: rgb(255, 255, 255);
+    background-color: rgba(25, 195, 79, 0.751);
+}
+
 .scrollable {
     position: absolute;
     inset: 2.5em 0 0;

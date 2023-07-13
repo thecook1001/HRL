@@ -10,6 +10,11 @@ namespace HRL.Database
             //"server=127.0.0.1; database=test; Integrated Security=true; Encrypt=false; TrustServerCertificate=true"
         }
 
-        //public DbSet<Human> Humanes { get; set; }
+        public DbSet<DatenAnSps> DatenAnSps { get; set; }
+        public DbSet<DatenAnSpsHistorie> DatenAnSpsHistorie { get; set; }
     }
 }
+
+//Nach Änderung Update-Database -Migration InitialCreate ausführen und eventuell Datenbank löschen im ManagmentStudio
+//dotnet ef migrations add InitialCreate
+//(Du hast letztes mal 3,5 Stunden nach dem Befehl gesucht...)

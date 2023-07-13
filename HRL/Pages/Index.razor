@@ -1,6 +1,7 @@
 ﻿@namespace HRL.Pages
 @inject IModalService modal
 @page "/"
+@using HRL.Database;
 <PageTitle>Index</PageTitle>
 
 <div id="Container">
@@ -444,8 +445,69 @@
             </table>
         </div>
     </div>
+
+
+    <div id="Datenbank">
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Temp. (C)</th>
+            <th>Temp. (F)</th>
+            <th>Summary</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var forecast in forecasts)
+        {
+            <tr>
+                <td>
+                            @forecast.Auftraege0PositionYP
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+    </div>
 </div>
 
 @code {
+    private List<DatenAnSpsDto> forecasts;
 
+    protected override async Task OnInitializedAsync()
+    {
+        using (var connection = new HRLContext())
+        {
+            var datenAnSps = new DatenAnSps();
+            datenAnSps.Auftraege0Gewicht = 120.0;
+            datenAnSps.Auftraege0PositionYP = 12;
+            connection.DatenAnSps.Add(datenAnSps);
+            connection.SaveChanges();
+        }
+
+        using (var connection = new HRLContext())
+        {
+            var datenAnSpsHistorie = new DatenAnSpsHistorie();
+            datenAnSpsHistorie.Auftraege0Gewicht = 120.0;
+            datenAnSpsHistorie.Auftraege0PositionYP = 12;
+            datenAnSpsHistorie.ZeitStempel = DateTime.Now;
+            connection.DatenAnSpsHistorie.Add(datenAnSpsHistorie);
+            connection.SaveChanges();
+        }
+
+        using (var connection = new HRLContext())
+        {
+            forecasts = new List<DatenAnSpsDto>();
+            int i = 0;
+            foreach (var item in connection.DatenAnSps)
+            {
+                forecasts.Add(new DatenAnSpsDto()
+                    {
+                        Auftraege0PositionYP = item.Auftraege0PositionYP
+
+                    });
+            }
+        }
+    }
 }
