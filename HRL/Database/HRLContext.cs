@@ -12,6 +12,9 @@ namespace HRL.Database
 
         public DbSet<DatenAnSps> DatenAnSps { get; set; }
         public DbSet<DatenAnSpsHistorie> DatenAnSpsHistorie { get; set; }
+        public DbSet<TransportmaschineVonSps> TransportmaschinenVonSps { get; set; }
+        public DbSet<FehlerlisteVonSps> FehlerlistenVonSps { get; set; }
+        public DbSet<AllgemeinVonSps> AllgemeinesVonSps { get; set; }
     }
 }
 

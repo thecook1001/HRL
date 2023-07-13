@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HRL.Migrations
 {
     [DbContext(typeof(HRLContext))]
-    [Migration("20230713162327_InitialCreate")]
+    [Migration("20230713183031_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -24,6 +24,22 @@ namespace HRL.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("HRL.Database.AllgemeinVonSps", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Kommunikation")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AllgemeinesVonSps");
+                });
 
             modelBuilder.Entity("HRL.Database.DatenAnSps", b =>
                 {
@@ -100,6 +116,90 @@ namespace HRL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("DatenAnSpsHistorie");
+                });
+
+            modelBuilder.Entity("HRL.Database.FehlerlisteVonSps", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Aktiv")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Beschreibung")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DatumUhrzeit")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Nr")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FehlerlistenVonSps");
+                });
+
+            modelBuilder.Entity("HRL.Database.TransportmaschineVonSps", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("BelegungPhysisch")
+                        .HasColumnType("bit");
+
+                    b.Property<float>("IstPositionX")
+                        .HasColumnType("real");
+
+                    b.Property<int>("IstPositionXP")
+                        .HasColumnType("int");
+
+                    b.Property<float>("IstPositionY")
+                        .HasColumnType("real");
+
+                    b.Property<int>("IstPositionYP")
+                        .HasColumnType("int");
+
+                    b.Property<float>("IstPositionZ")
+                        .HasColumnType("real");
+
+                    b.Property<int>("IstPositionZP")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("SollPositionX")
+                        .HasColumnType("real");
+
+                    b.Property<int>("SollPositionXP")
+                        .HasColumnType("int");
+
+                    b.Property<float>("SollPositionY")
+                        .HasColumnType("real");
+
+                    b.Property<int>("SollPositionYP")
+                        .HasColumnType("int");
+
+                    b.Property<float>("SollPositionZ")
+                        .HasColumnType("real");
+
+                    b.Property<int>("SollPositionZP")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Zustand")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TransportmaschinenVonSps");
                 });
 #pragma warning restore 612, 618
         }
