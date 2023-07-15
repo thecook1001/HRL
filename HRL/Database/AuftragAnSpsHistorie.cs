@@ -1,10 +1,8 @@
 ﻿namespace HRL.Database
 {
-    public class DatenAnSpsHistorie
+    public class AuftragAnSpsHistorie
     {
         public int Id { get; set; }
-        public bool AllgemeinWatchDog { get; set; }
-        public bool AllgemeinStoerungQuittieren { get; set; }
         public int Auftraege0Art { get; set; }
         public int Auftraege0LagerId { get; set; }
         public int Auftraege0PositionXP { get; set; }

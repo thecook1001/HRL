@@ -12,6 +12,20 @@ namespace HRL.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "AllgemeinesAnSps",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    WatchDog = table.Column<bool>(type: "bit", nullable: false),
+                    StoerungQuittieren = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AllgemeinesAnSps", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AllgemeinesVonSps",
                 columns: table => new
                 {
@@ -25,33 +39,29 @@ namespace HRL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DatenAnSps",
+                name: "AuftraegeAnSps",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AllgemeinWatchDog = table.Column<bool>(type: "bit", nullable: false),
-                    AllgemeinStoerungQuittieren = table.Column<bool>(type: "bit", nullable: false),
-                    Auftraege0Art = table.Column<int>(type: "int", nullable: false),
-                    Auftraege0LagerId = table.Column<int>(type: "int", nullable: false),
-                    Auftraege0PositionXP = table.Column<int>(type: "int", nullable: false),
-                    Auftraege0PositionYP = table.Column<int>(type: "int", nullable: false),
-                    Auftraege0PositionZP = table.Column<int>(type: "int", nullable: false),
-                    Auftraege0Gewicht = table.Column<double>(type: "float", nullable: false)
+                    Art = table.Column<short>(type: "smallint", nullable: false),
+                    LagerId = table.Column<short>(type: "smallint", nullable: false),
+                    PositionXP = table.Column<short>(type: "smallint", nullable: false),
+                    PositionYP = table.Column<short>(type: "smallint", nullable: false),
+                    PositionZP = table.Column<short>(type: "smallint", nullable: false),
+                    Gewicht = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DatenAnSps", x => x.Id);
+                    table.PrimaryKey("PK_AuftraegeAnSps", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "DatenAnSpsHistorie",
+                name: "AuftraegeAnSpsHistorie",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AllgemeinWatchDog = table.Column<bool>(type: "bit", nullable: false),
-                    AllgemeinStoerungQuittieren = table.Column<bool>(type: "bit", nullable: false),
                     Auftraege0Art = table.Column<int>(type: "int", nullable: false),
                     Auftraege0LagerId = table.Column<int>(type: "int", nullable: false),
                     Auftraege0PositionXP = table.Column<int>(type: "int", nullable: false),
@@ -62,7 +72,7 @@ namespace HRL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DatenAnSpsHistorie", x => x.Id);
+                    table.PrimaryKey("PK_AuftraegeAnSpsHistorie", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -113,13 +123,16 @@ namespace HRL.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AllgemeinesAnSps");
+
+            migrationBuilder.DropTable(
                 name: "AllgemeinesVonSps");
 
             migrationBuilder.DropTable(
-                name: "DatenAnSps");
+                name: "AuftraegeAnSps");
 
             migrationBuilder.DropTable(
-                name: "DatenAnSpsHistorie");
+                name: "AuftraegeAnSpsHistorie");
 
             migrationBuilder.DropTable(
                 name: "FehlerlistenVonSps");

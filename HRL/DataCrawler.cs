@@ -18,7 +18,7 @@ namespace DatenbankInBVLazor
                 try
                 {
                     Thread.Sleep(sleepTime);
-                    using (var connection = new HRLContext())
+                    using (var connection = new HRLContext()) // Funktione auslagern ALLES
                     {
                         bool keepRunning = true;
                         int result = 0;
@@ -34,35 +34,13 @@ namespace DatenbankInBVLazor
                         {
 
                             //daten Lesen
-                            byte[] db1BufferR = new byte[10];
                             byte[] db8BufferR = new byte[689];
-                            byte[] db2BufferW = new byte[10];
-                            //Transportmaschine
-                            string Name ;
-                            float SollPositionX, SollPositionY, SollPositionZ;
-                            int SollPositionXP, SollPositionYP, SollPositionZP;
-                            float IstPositionX, IstPositionY, IstPositionZ;
-                            int IstPositionXP, IstPositionYP, IstPositionZP;
-                            int Zustand;
-                            bool BelegungPhysisch;
-
-                            //Fehlerliste
-
-
-                            //Allgemein
-                            bool Kommunikation;
+                            byte[] db7BufferW = new byte[16];
 
                             result = client.DBRead(8, 0, 689, db8BufferR);
-                            if (result == 0)
+                            if (result != 0)
                             {
-                                Console.WriteLine("Daten Gelesen !");
-                            }
-                            else
-                            {
-                                Console.WriteLine("Fehler beim Lesen !");
-                                Console.Write("Fehler Code: ");
                                 Console.WriteLine(result);
-                                Console.Write("Fehler Text: ");
                                 Console.WriteLine(client.ErrorText(result));
                                 connErrors++;
                                 if (connErrors >= maxConnErrors)
@@ -72,7 +50,7 @@ namespace DatenbankInBVLazor
                             }
 
 
-                            //Transportwagen
+                            //Transportwagen Von SPS
                             var TransportmaschineVonSpsResult = connection.Find<TransportmaschineVonSps>(1);
                             if (TransportmaschineVonSpsResult == null)
                             {
@@ -96,7 +74,7 @@ namespace DatenbankInBVLazor
                             TransportmaschineVonSpsResult.BelegungPhysisch = S7.GetBitAt(db8BufferR, 46, 0);
                             connection.SaveChanges();
 
-                            //Fehlerliste
+                            //Fehlerliste Von SPS
                             int j = 48;
                             for (int i = 1; i < 11; i++)
                             {
@@ -114,7 +92,7 @@ namespace DatenbankInBVLazor
                                 j = j+64;
                             }
 
-                            //Allgemein
+                            //Allgemein Von SPS
                             var AllgemeinVonSpsResult = connection.Find<AllgemeinVonSps>(1);
                             if (AllgemeinVonSpsResult == null)
                             {
@@ -126,44 +104,50 @@ namespace DatenbankInBVLazor
 
 
 
-                            //bool WatchdogR = false;
-                            //int int1R, int2R, int3R, int4R = 0;
-                            //short int1W = 100;
-                            //short int2W = 200;
-                            //short int3W = 300;
-                            //short int4W = 400;
+
+                            //Allgemein An SPS
+                            var AllgemeinAnSpsResult = connection.Find<AllgemeinAnSps>(1);
+                            connection.Entry(AllgemeinAnSpsResult).Reload();    
+                            if (AllgemeinAnSpsResult == null)
+                            {
+                                AllgemeinAnSpsResult = new AllgemeinAnSps();
+                                connection.AllgemeinesAnSps.Add(AllgemeinAnSpsResult);
+                            }
+                            AllgemeinAnSpsResult.WatchDog = true;
+                            connection.SaveChanges();
+
+                            S7.SetBitAt(ref db7BufferW, 0, 0, AllgemeinAnSpsResult.WatchDog);
+                            S7.SetBitAt(ref db7BufferW, 0, 1, AllgemeinAnSpsResult.StoerungQuittieren);
+                            result = client.DBWrite(7, 0, 16, db7BufferW);
 
 
-                            //result = client.DBRead(1, 0, 10, db1BufferR);
-                            //if (result == 0)
-                            //{
-                            //    Console.WriteLine("Daten Gelesen !");
-                            //}
-                            //else
-                            //{
-                            //    Console.WriteLine("Fehler beim Lesen !");
-                            //    Console.Write("Fehler Code: ");
-                            //    Console.WriteLine(result);
-                            //    Console.Write("Fehler Text: ");
-                            //    Console.WriteLine(client.ErrorText(result));
-                            //    connErrors++;
-                            //    if (connErrors >= maxConnErrors)
-                            //    {
-                            //        return;
-                            //    }
-                            //}
-                            //WatchdogR = S7.GetBitAt(db1BufferR, 0, 0);
-                            //int1R = S7.GetIntAt(db1BufferR, 2);
-                            //int2R = S7.GetIntAt(db1BufferR, 4);
-                            //int3R = S7.GetIntAt(db1BufferR, 6);
-                            //int4R = S7.GetIntAt(db1BufferR, 8);
 
-                            //Console.WriteLine("Daten:");
-                            //Console.WriteLine(WatchdogR);
-                            //Console.WriteLine(int1R);
-                            //Console.WriteLine(int2R);
-                            //Console.WriteLine(int3R);
-                            //Console.WriteLine(int4R);
+
+
+
+
+
+
+
+                            //Auftrag von SPS
+                            var AuftragAnSpsResult = connection.Find<AuftragAnSps>(1);
+                            if (AuftragAnSpsResult == null)
+                            {
+                                AuftragAnSpsResult = new AuftragAnSps();
+                                connection.AuftraegeAnSps.Add(AuftragAnSpsResult);
+                            }
+                            connection.SaveChanges();
+
+                            S7.SetIntAt(db7BufferW, 2, AuftragAnSpsResult.Art);
+                            S7.SetIntAt(db7BufferW, 4, AuftragAnSpsResult.LagerId);
+                            S7.SetIntAt(db7BufferW, 6, AuftragAnSpsResult.PositionXP);
+                            S7.SetIntAt(db7BufferW, 8, AuftragAnSpsResult.PositionYP);
+                            S7.SetIntAt(db7BufferW, 10, AuftragAnSpsResult.PositionZP);
+                            S7.SetRealAt(db7BufferW, 12, AuftragAnSpsResult.Gewicht);
+
+                            result = client.DBWrite(7, 0, 16, db7BufferW);
+
+
 
                             //// Schreiben :D
 
@@ -196,8 +180,6 @@ namespace DatenbankInBVLazor
                         }
                         //client.WriteArea();
                         //client.ReadArea();
-                        Console.WriteLine("Programm Ende");
-                        Console.ReadLine();
                     }
                 }
                 catch (Exception)
@@ -232,6 +214,13 @@ namespace DatenbankInBVLazor
             }
         }
 
+
+
+
+
     }
+
+
+
 }
 

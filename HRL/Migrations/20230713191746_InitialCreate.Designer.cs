@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HRL.Migrations
 {
     [DbContext(typeof(HRLContext))]
-    [Migration("20230713183031_InitialCreate")]
+    [Migration("20230713191746_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -24,6 +24,25 @@ namespace HRL.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("HRL.Database.AllgemeinAnSps", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("StoerungQuittieren")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("WatchDog")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AllgemeinesAnSps");
+                });
 
             modelBuilder.Entity("HRL.Database.AllgemeinVonSps", b =>
                 {
@@ -41,7 +60,7 @@ namespace HRL.Migrations
                     b.ToTable("AllgemeinesVonSps");
                 });
 
-            modelBuilder.Entity("HRL.Database.DatenAnSps", b =>
+            modelBuilder.Entity("HRL.Database.AuftragAnSps", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -49,48 +68,36 @@ namespace HRL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("AllgemeinStoerungQuittieren")
-                        .HasColumnType("bit");
+                    b.Property<short>("Art")
+                        .HasColumnType("smallint");
 
-                    b.Property<bool>("AllgemeinWatchDog")
-                        .HasColumnType("bit");
+                    b.Property<float>("Gewicht")
+                        .HasColumnType("real");
 
-                    b.Property<int>("Auftraege0Art")
-                        .HasColumnType("int");
+                    b.Property<short>("LagerId")
+                        .HasColumnType("smallint");
 
-                    b.Property<double>("Auftraege0Gewicht")
-                        .HasColumnType("float");
+                    b.Property<short>("PositionXP")
+                        .HasColumnType("smallint");
 
-                    b.Property<int>("Auftraege0LagerId")
-                        .HasColumnType("int");
+                    b.Property<short>("PositionYP")
+                        .HasColumnType("smallint");
 
-                    b.Property<int>("Auftraege0PositionXP")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Auftraege0PositionYP")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Auftraege0PositionZP")
-                        .HasColumnType("int");
+                    b.Property<short>("PositionZP")
+                        .HasColumnType("smallint");
 
                     b.HasKey("Id");
 
-                    b.ToTable("DatenAnSps");
+                    b.ToTable("AuftraegeAnSps");
                 });
 
-            modelBuilder.Entity("HRL.Database.DatenAnSpsHistorie", b =>
+            modelBuilder.Entity("HRL.Database.AuftragAnSpsHistorie", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("AllgemeinStoerungQuittieren")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("AllgemeinWatchDog")
-                        .HasColumnType("bit");
 
                     b.Property<int>("Auftraege0Art")
                         .HasColumnType("int");
@@ -115,7 +122,7 @@ namespace HRL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DatenAnSpsHistorie");
+                    b.ToTable("AuftraegeAnSpsHistorie");
                 });
 
             modelBuilder.Entity("HRL.Database.FehlerlisteVonSps", b =>

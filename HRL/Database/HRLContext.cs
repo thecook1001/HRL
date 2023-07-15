@@ -9,12 +9,12 @@ namespace HRL.Database
             optionsBuilder.UseSqlServer("Server = (local)\\SQLEXPRESS; Database = HRL; Integrated Security = true; TrustServerCertificate = True; ");
             //"server=127.0.0.1; database=test; Integrated Security=true; Encrypt=false; TrustServerCertificate=true"
         }
-
-        public DbSet<DatenAnSps> DatenAnSps { get; set; }
-        public DbSet<DatenAnSpsHistorie> DatenAnSpsHistorie { get; set; }
         public DbSet<TransportmaschineVonSps> TransportmaschinenVonSps { get; set; }
         public DbSet<FehlerlisteVonSps> FehlerlistenVonSps { get; set; }
         public DbSet<AllgemeinVonSps> AllgemeinesVonSps { get; set; }
+        public DbSet<AllgemeinAnSps> AllgemeinesAnSps { get; set; }
+        public DbSet<AuftragAnSps> AuftraegeAnSps { get; set; }
+        public DbSet<AuftragAnSpsHistorie> AuftraegeAnSpsHistorie { get; set; }
     }
 }
 
