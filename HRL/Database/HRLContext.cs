@@ -1,4 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using HRL.Database.FromPlc;
+using HRL.Database.Local;
+using HRL.Database.ToPlc;
+using Microsoft.EntityFrameworkCore;
+using HRL.Classes;
 
 namespace HRL.Database
 {
@@ -15,6 +19,9 @@ namespace HRL.Database
         public DbSet<AllgemeinAnSps> AllgemeinesAnSps { get; set; }
         public DbSet<AuftragAnSps> AuftraegeAnSps { get; set; }
         public DbSet<AuftragAnSpsHistorie> AuftraegeAnSpsHistorie { get; set; }
+        public DbSet<FehlerLog> FehlerLogs { get; set; }
+        public DbSet<StockSpace> StockSpaces { get; set; }
+        public DbSet<HRL.Classes.StockSpaceData> StockSpaceData { get; set; }
     }
 }
 

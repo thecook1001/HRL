@@ -1,0 +1,295 @@
+﻿@namespace HRL.Pages
+@using HRL.Classes;
+@using HRL.Database;
+@using Microsoft.AspNetCore.Mvc.ViewFeatures
+@using HRL.Components
+@using System.Reflection;
+@using static HRL.Components.LabeledInput
+@using static HRL.Components.LabeledButton
+
+
+
+<div class="modal @modalClass" tabindex="-1" role="dialog" style="display:@modalDisplay; overflow-y: auto;">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@Title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @Body
+                <H1>"Das ist ein Test du Pop-Up"   </H1>
+
+                <form>
+                    <div style="display:flex; flex-wrap:wrap;">
+                        <div style="flex:1; margin-right:10px;">
+                            <LabeledInput Label="Transport-ID:"
+                                          InputType="InputTypes.Number"
+                                          Id="transportUnitId"
+                                          ValueInt="@modalData.TransportId"
+                                          ValueMax="32767"
+                                          ValueMin="1"
+                                          Required="true"
+                                          Readonly="@transportUnitEditValue" />
+
+
+                                          <input @bind="modalData.Status">
+
+                            <LabeledInput Label="Status:"
+                                          StockSpaceData="@modalData"
+                                          InputType="InputTypes.Text"
+                                          Id="TransportUnitStatus"
+                                          ValueString="@modalData.Status"
+                                          ValueMax="10"
+                                          Readonly="@transportUnitEditValue" />
+                                          
+                            <LabeledInput Label="Gewicht:"
+                                          InputType="InputTypes.Number"
+                                          Id="transportUnitWeight"
+                                          ValueInt="@TransportUnitWeightValue"
+                                          ValueMax="32767"
+                                          ValueMin="1"
+                                          Required="true"
+                                          Readonly="@transportUnitEditValue"
+                                          Suffix="KG" />
+
+                            <LabeledInput Label="Priorität:"
+                                          InputType="InputTypes.Number"
+                                          Id="transportUnitPriority"
+                                          ValueInt="@modalData.Priority"
+                                          ValueMax="99"
+                                          ValueMin="0"
+                                          Readonly="@transportUnitEditValue" />
+
+                            <LabeledInput Label="Inhalt:"
+                                          InputType="InputTypes.Text"
+                                          Id="transportUnitContent"
+                                          ValueString="@modalData.Content"
+                                          ValueMax="10"
+                                          Readonly="@transportUnitEditValue" />
+
+                            <LabeledInput Label="Anzahl:"
+                                          InputType="InputTypes.Number"
+                                          Id="transportUnitCount"
+                                          ValueInt="@modalData.NumberOfItems"
+                                          ValueMax="32767"
+                                          ValueMin="0"
+                                          Readonly="@transportUnitEditValue"
+                                          Suffix="Stück" />
+                        </div>
+
+                        <div style="flex:1;">
+                            <LabeledInput Label="Einlager Datum:"
+                                          InputType="InputTypes.Date"
+                                          Id="transportUnitStorageDate"
+                                          ValueDate="@DateOnly.Parse(modalData.PostingDateTime.Date.ToString("yyyy-MM-dd"))"
+                                          Readonly="@transportUnitEditValue" />
+
+                            <LabeledInput Label="Einlager Uhrzeit:"
+                                          InputType="InputTypes.Time"
+                                          Id="transportUnitStorageTime"
+                                          ValueTime="@TimeOnly.FromDateTime(modalData.PostingDateTime)"
+                                          Readonly="@transportUnitEditValue" />
+
+                            <LabeledInput Label="Einlager Benutzer:"
+                                          InputType="InputTypes.Text"
+                                          Id="transportUnitStorageUser"
+                                          ValueString="@modalData.PostingUser"
+                                          ValueMax="4"
+                                          Readonly="@transportUnitEditValue" />
+
+                            <LabeledInput Label="Transport Datum:"
+                                          InputType="InputTypes.Date"
+                                          Id="transportUnitTransportDate"
+                                          ValueDate="@DateOnly.Parse(modalData.TransportDateTime.Date.ToString("yyyy-MM-dd"))"
+                                          Readonly="@transportUnitEditValue" />
+
+                            <LabeledInput Label="Transport Uhrzeit:"
+                                          InputType="InputTypes.Time"
+                                          Id="transportUnitTransportTime"
+                                          ValueTime="@TimeOnly.FromDateTime(modalData.TransportDateTime)"
+                                          Readonly="@transportUnitEditValue" />
+
+                            <LabeledInput Label="Transport Benutzer:"
+                                          InputType="InputTypes.Text"
+                                          Id="transportUnitTransportUser"
+                                          ValueString="@modalData.TransportUser"
+                                          ValueMax="4"
+                                          Readonly="@transportUnitEditValue" />
+                        </div>
+                    </div>
+
+                    <div>
+                        <LabeledInput Label="Bemerkung:"
+                                      InputType="InputTypes.Text"
+                                      Id="transportUnitRemark"
+                                      ValueString="@modalData.Remarks"
+                                      ValueMax="40"
+                                      Readonly="@transportUnitEditValue" />
+                    </div>
+
+
+                    @if (edit)
+                    {
+                        <LabeledButton ButtonType="ButtonTypes.Button"
+                                       ButtonColor="ButtonColors.Green"
+                                       Value="@transportUnitAcceptValue"
+                                       Label="Übernehmen"
+                                       Id="transportUnitAccept" />
+
+                        <LabeledButton ButtonType="ButtonTypes.Button"
+                                       ButtonColor="ButtonColors.Red"
+                                       Value="@transportUnitDeleteValue"
+                                       Label="Löschen"
+                                       Id="transportUnitDelete" />
+
+                        <LabeledButton ButtonType="ButtonTypes.Button"
+                                       ButtonColor="ButtonColors.Grey"
+                                       Value="@transportUnitCancelValue"
+                                       Label="Abbrechen"
+                                       Id="transportUnitCancel"
+                                       OnSwitchState="@showEdit" />
+                    }
+                    else
+                    {
+
+                        <LabeledButton ButtonType="ButtonTypes.Button"
+                                       ButtonColor="ButtonColors.Turquoise"
+                                       Value="@transportUnitRequestValue"
+                                       Label="Anfordern"
+                                       Id="transportUnitRequest"
+                                       OnSwitchState="@MyOnClick" />
+
+                        <LabeledButton ButtonType="ButtonTypes.Button"
+                                       ButtonColor="ButtonColors.Blue"
+                                       Value="@transportUnitRequestImmediatelyValue"
+                                       Label="Sofort Anfordern"
+                                       Id="transportUnitRequestImmediately" />
+
+                        <LabeledButton ButtonType="ButtonTypes.Button"
+                                       ButtonColor="ButtonColors.Yellow"
+                                       Value="@transportUnitEditValue"
+                                       Label="Bearbeiten"
+                                       Id="transportUnitEdit"
+                                       OnSwitchState="@showEdit" />
+                    }
+
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                @Footer
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (showBackdrop)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
+@code {
+
+    public int TransportUnitIdValue { get; set; } = 1;
+    public string TransportUnitStatusValue { get; set; } = "Test";
+    public int TransportUnitWeightValue { get; set; } = 3;
+    public int TransportUnitPriorityValue { get; set; } = 4;
+    public string? TransportUnitContentValue { get; set; } = "";
+    public int TransportUnitCountValue { get; set; } = 5;
+    public DateOnly TransportUnitStorageDateValue { get; set; } = DateOnly.Parse(DateTime.Now.Date.ToString("yyyy-MM-dd"));
+    public TimeOnly TransportUnitStorageTimeValue { get; set; } = TimeOnly.FromDateTime(DateTime.Now);
+    public string? TransportUnitStorageUserValue { get; set; } = "ILRE";
+    public DateOnly TransportUnitTransportDateValue { get; set; } = DateOnly.Parse(DateTime.Now.Date.ToString("yyyy-MM-dd"));
+    public TimeOnly TransportUnitTransportTimeValue { get; set; } = TimeOnly.FromDateTime(DateTime.Now);
+    public string? TransportUnitTransportUserValue { get; set; } = "WADO";
+    public string? TransportUnitRemarkValue { get; set; } = "111222333444555666777888999000";
+
+    public bool transportUnitRequestValue { get; set; }
+    public bool transportUnitRequestImmediatelyValue { get; set; }
+    public bool transportUnitEditValue { get; set; }
+    public bool transportUnitDeleteValue { get; set; }
+    public bool transportUnitAcceptValue { get; set; }
+    public bool transportUnitCancelValue { get; set; }
+    public bool edit = false;
+
+    StockSpaceData? modalData;
+
+    [Parameter]
+    public RenderFragment? Title { get; set; }
+
+    [Parameter]
+    public RenderFragment? Body { get; set; }
+
+    [Parameter]
+    public RenderFragment? Footer { get; set; }
+
+    public Guid Guid = Guid.NewGuid();
+
+    private string modalDisplay = "none;";
+    private string modalClass = "";
+    private bool showBackdrop = false;
+
+    protected override void OnInitialized()
+    {
+        if (modalData is null)
+        {
+            modalData = new StockSpaceData();
+        }
+        base.OnInitialized();
+    }
+
+    public void Open(StockSpaceData data)
+    {
+        modalData = data;
+        if (modalData is null)
+        {
+            modalData = new StockSpaceData();
+        }
+        modalDisplay = "block;";
+        modalClass = "show";
+        showBackdrop = true;
+        StateHasChanged();
+    }
+
+    public void Close()
+    {
+        StateHasChanged();
+        using (var connect = new HRLContext())
+        {
+            var stockSpace = connect.Find<StockSpace>(modalData.Id);
+            modalData.ToStockSpace(stockSpace);
+            connect.SaveChanges();
+        }
+        modalDisplay = "none";
+        modalClass = "";
+        showBackdrop = false;
+        StateHasChanged();
+    }
+
+    public void MyOnClick(object sender)
+    {
+        if (sender is LabeledButton labeledButton)
+        {
+            labeledButton.SetButtonColor(ButtonColors.Dark);
+            this.StateHasChanged();
+
+        }
+    }
+
+    public void showEdit(object sender)
+    {
+        if (!edit)
+        {
+            edit = true;
+        }
+        else
+        {
+            edit = false;
+        }
+        this.StateHasChanged();
+
+    }
+}

@@ -1,4 +1,7 @@
 ﻿using HRL.Database;
+using HRL.Database.FromPlc;
+using HRL.Database.Local;
+using HRL.Database.ToPlc;
 using Sharp7;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
@@ -52,8 +55,9 @@ namespace DatenbankInBVLazor
                         }
                     }
                 }
-                catch (Exception)
+                catch (Exception exception)
                 {
+                    FehlerMeldung(exception.Message);
                     sleepTime += 1000;
                     throw;
                 }
@@ -169,7 +173,26 @@ namespace DatenbankInBVLazor
                 }
                 catch (Exception exception)
                 {
-                    Console.WriteLine(exception.Message);
+                    FehlerMeldung(exception.Message);
+                }
+            }
+        }
+
+        private void FehlerMeldung(string fehlerText)
+        {
+            using (var connection = new HRLContext())
+            {
+                try
+                {
+                    var FehlerLogResult = new FehlerLog();
+                    FehlerLogResult.Meldung = fehlerText;
+                    FehlerLogResult.DatumUhrzeit = DateTime.Now;
+                    connection.FehlerLogs.Add(FehlerLogResult);
+                    connection.SaveChanges();
+                }
+                catch (Exception exception)
+                {
+                    FehlerMeldung(exception.Message);
                 }
             }
         }

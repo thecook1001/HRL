@@ -1,6 +1,6 @@
-﻿namespace HRL.Database
+﻿namespace HRL.Database.FromPlc
 {
-    public class AllgemeinVonSps
+    public class AllgemeinVonSpsDto
     {
         public int Id { get; set; }
         public bool Kommunikation { get; set; }

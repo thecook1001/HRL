@@ -62,12 +62,12 @@ namespace HRL.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Auftraege0Art = table.Column<int>(type: "int", nullable: false),
-                    Auftraege0LagerId = table.Column<int>(type: "int", nullable: false),
-                    Auftraege0PositionXP = table.Column<int>(type: "int", nullable: false),
-                    Auftraege0PositionYP = table.Column<int>(type: "int", nullable: false),
-                    Auftraege0PositionZP = table.Column<int>(type: "int", nullable: false),
-                    Auftraege0Gewicht = table.Column<double>(type: "float", nullable: false),
+                    Art = table.Column<short>(type: "smallint", nullable: false),
+                    LagerId = table.Column<short>(type: "smallint", nullable: false),
+                    PositionXP = table.Column<short>(type: "smallint", nullable: false),
+                    PositionYP = table.Column<short>(type: "smallint", nullable: false),
+                    PositionZP = table.Column<short>(type: "smallint", nullable: false),
+                    Gewicht = table.Column<float>(type: "real", nullable: false),
                     ZeitStempel = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -89,6 +89,68 @@ namespace HRL.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_FehlerlistenVonSps", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FehlerLogs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Meldung = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DatumUhrzeit = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FehlerLogs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StockSpaceData",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TransportId = table.Column<short>(type: "smallint", nullable: false),
+                    Position = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Weight = table.Column<float>(type: "real", nullable: false),
+                    Priority = table.Column<int>(type: "int", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NumberOfItems = table.Column<int>(type: "int", nullable: false),
+                    PostingDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PostingUser = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TransportDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TransportUser = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Remarks = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StockSpaceData", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StockSpaces",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TransportId = table.Column<short>(type: "smallint", nullable: false),
+                    Position = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Weight = table.Column<float>(type: "real", nullable: false),
+                    Priority = table.Column<int>(type: "int", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NumberOfItems = table.Column<int>(type: "int", nullable: false),
+                    PostingDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PostingUser = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TransportDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TransportUser = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Remarks = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StockSpaces", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -136,6 +198,15 @@ namespace HRL.Migrations
 
             migrationBuilder.DropTable(
                 name: "FehlerlistenVonSps");
+
+            migrationBuilder.DropTable(
+                name: "FehlerLogs");
+
+            migrationBuilder.DropTable(
+                name: "StockSpaceData");
+
+            migrationBuilder.DropTable(
+                name: "StockSpaces");
 
             migrationBuilder.DropTable(
                 name: "TransportmaschinenVonSps");

@@ -1,4 +1,4 @@
-﻿namespace HRL.Database
+﻿namespace HRL.Database.FromPlc
 {
     public class TransportmaschineVonSpsDto
     {

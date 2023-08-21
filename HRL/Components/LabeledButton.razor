@@ -80,7 +80,7 @@
     public void SetButtonColor(ButtonColors buttonColor)
     {
         this.ButtonColor = buttonColor;
-        bootstrapColor = "btn-success";
+        OnInitialized();
     }
 
     protected override void OnInitialized()
@@ -157,7 +157,7 @@
                     {
                         LabelLatched = Label;
                     }
-                    bootstrapColor = "btn-light";
+                    bootstrapColor = "btn-dark";
                     break;
                 }
         }

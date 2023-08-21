@@ -1,6 +1,7 @@
-﻿Die Button haben Abstände und sindn nicht gleich breit
-@namespace HRL.Pages
+﻿@namespace HRL.Pages
 @page "/LagerplatzPopup"
+@using HRL.Classes;
+@using HRL.Database;
 @using Microsoft.AspNetCore.Mvc.ViewFeatures
 @using HRL.Components
 @using System.Reflection;
@@ -16,19 +17,17 @@
             <LabeledInput Label="Transport-ID:"
                           InputType="InputTypes.Number"
                           Id="transportUnitId"
-                          ValueInt="@TransportUnitIdValue"
+                          @bind-ValueInt="@TransportUnitIdValue"
                           ValueMax="32767"
                           ValueMin="1"
                           Required="true"
                           Readonly="@transportUnitEditValue" />
 
             <LabeledInput Label="Status:"
-                          InputType="InputTypes.Number"
-                          Id="transportUnitStatus"
-                          ValueInt="@TransportUnitStatusValue"
-                          ValueMax="20"
-                          ValueMin="0"
-                          Required="true"
+                          InputType="InputTypes.Text"
+                          Id="TransportUnitStatus"
+                          value="@TransportUnitStatusValue"
+                          ValueMax="10"
                           Readonly="@transportUnitEditValue" />
 
             <LabeledInput Label="Gewicht:"
@@ -181,11 +180,38 @@
 </form>
 
 @code {
+    [CascadingParameter] BlazoredModalInstance BlazoredModal { get; set; } = default!;
+    public LagerplatzPopup()
+    {
+
+    }
+
+    public void ShowModalWindow(object sender, EventArgs args)
+    {
+
+    }
+    [Parameter]
+    public StockSpaceData StockSpaceData { get; set; }
     public int TransportUnitIdValue { get; set; } = 1;
-    public int TransportUnitStatusValue { get; set; } = 2;
+    public string TransportUnitStatusValue
+    {
+        get
+        {
+            return this.StockSpaceData.Status;
+        }
+        set
+        {
+            using(var contect = new HRLContext())
+            {
+                var stockSpace = contect.Find<StockSpace>(this.StockSpaceData.Id);
+                stockSpace.Status = value;
+                contect.SaveChanges();
+            }
+        }
+    }
     public int TransportUnitWeightValue { get; set; } = 3;
     public int TransportUnitPriorityValue { get; set; } = 4;
-    public string? TransportUnitContentValue { get; set; } = "Kisten";
+    public string? TransportUnitContentValue { get; set; } = "";
     public int TransportUnitCountValue { get; set; } = 5;
     public DateOnly TransportUnitStorageDateValue { get; set; } = DateOnly.Parse(DateTime.Now.Date.ToString("yyyy-MM-dd"));
     public TimeOnly TransportUnitStorageTimeValue { get; set; } = TimeOnly.FromDateTime(DateTime.Now);
@@ -207,7 +233,7 @@
     {
         if (sender is LabeledButton labeledButton)
         {
-            labeledButton.SetButtonColor(ButtonColors.Red);
+            labeledButton.SetButtonColor(ButtonColors.Dark);
             this.StateHasChanged();
 
         }
