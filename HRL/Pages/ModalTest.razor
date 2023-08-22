@@ -13,19 +13,16 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">@Title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <h5 class="modal-title">Details Lagerplatz @Titel</h5>
+                <button type="button" class="btn-close btn-close-white" data-dismiss="modal" aria-label="Close" @onclick="Close"> </button>
             </div>
             <div class="modal-body">
                 @Body
-                <H1>"Das ist ein Test du Pop-Up"   </H1>
-
                 <form>
                     <div style="display:flex; flex-wrap:wrap;">
-                        <div style="flex:1; margin-right:10px;">
+                        <div style="flex:1; margin-right:20px;">
                             <LabeledInput Label="Transport-ID:"
+                                          StockSpaceData="@modalData"
                                           InputType="InputTypes.Number"
                                           Id="transportUnitId"
                                           ValueInt="@modalData.TransportId"
@@ -33,9 +30,6 @@
                                           ValueMin="1"
                                           Required="true"
                                           Readonly="@transportUnitEditValue" />
-
-
-                                          <input @bind="modalData.Status">
 
                             <LabeledInput Label="Status:"
                                           StockSpaceData="@modalData"
@@ -46,6 +40,7 @@
                                           Readonly="@transportUnitEditValue" />
                                           
                             <LabeledInput Label="Gewicht:"
+                                          StockSpaceData="@modalData"
                                           InputType="InputTypes.Number"
                                           Id="transportUnitWeight"
                                           ValueInt="@TransportUnitWeightValue"
@@ -56,6 +51,7 @@
                                           Suffix="KG" />
 
                             <LabeledInput Label="Priorität:"
+                                          StockSpaceData="@modalData"
                                           InputType="InputTypes.Number"
                                           Id="transportUnitPriority"
                                           ValueInt="@modalData.Priority"
@@ -64,6 +60,7 @@
                                           Readonly="@transportUnitEditValue" />
 
                             <LabeledInput Label="Inhalt:"
+                                          StockSpaceData="@modalData"
                                           InputType="InputTypes.Text"
                                           Id="transportUnitContent"
                                           ValueString="@modalData.Content"
@@ -71,6 +68,7 @@
                                           Readonly="@transportUnitEditValue" />
 
                             <LabeledInput Label="Anzahl:"
+                                          StockSpaceData="@modalData"
                                           InputType="InputTypes.Number"
                                           Id="transportUnitCount"
                                           ValueInt="@modalData.NumberOfItems"
@@ -82,18 +80,21 @@
 
                         <div style="flex:1;">
                             <LabeledInput Label="Einlager Datum:"
+                                          StockSpaceData="@modalData"
                                           InputType="InputTypes.Date"
                                           Id="transportUnitStorageDate"
                                           ValueDate="@DateOnly.Parse(modalData.PostingDateTime.Date.ToString("yyyy-MM-dd"))"
                                           Readonly="@transportUnitEditValue" />
 
                             <LabeledInput Label="Einlager Uhrzeit:"
+                                          StockSpaceData="@modalData"
                                           InputType="InputTypes.Time"
                                           Id="transportUnitStorageTime"
                                           ValueTime="@TimeOnly.FromDateTime(modalData.PostingDateTime)"
                                           Readonly="@transportUnitEditValue" />
 
                             <LabeledInput Label="Einlager Benutzer:"
+                                          StockSpaceData="@modalData"
                                           InputType="InputTypes.Text"
                                           Id="transportUnitStorageUser"
                                           ValueString="@modalData.PostingUser"
@@ -101,18 +102,21 @@
                                           Readonly="@transportUnitEditValue" />
 
                             <LabeledInput Label="Transport Datum:"
+                                          StockSpaceData="@modalData"
                                           InputType="InputTypes.Date"
                                           Id="transportUnitTransportDate"
                                           ValueDate="@DateOnly.Parse(modalData.TransportDateTime.Date.ToString("yyyy-MM-dd"))"
                                           Readonly="@transportUnitEditValue" />
 
                             <LabeledInput Label="Transport Uhrzeit:"
+                                          StockSpaceData="@modalData"
                                           InputType="InputTypes.Time"
                                           Id="transportUnitTransportTime"
                                           ValueTime="@TimeOnly.FromDateTime(modalData.TransportDateTime)"
                                           Readonly="@transportUnitEditValue" />
 
                             <LabeledInput Label="Transport Benutzer:"
+                                          StockSpaceData="@modalData"
                                           InputType="InputTypes.Text"
                                           Id="transportUnitTransportUser"
                                           ValueString="@modalData.TransportUser"
@@ -129,58 +133,55 @@
                                       ValueMax="40"
                                       Readonly="@transportUnitEditValue" />
                     </div>
-
-
-                    @if (edit)
-                    {
-                        <LabeledButton ButtonType="ButtonTypes.Button"
-                                       ButtonColor="ButtonColors.Green"
-                                       Value="@transportUnitAcceptValue"
-                                       Label="Übernehmen"
-                                       Id="transportUnitAccept" />
-
-                        <LabeledButton ButtonType="ButtonTypes.Button"
-                                       ButtonColor="ButtonColors.Red"
-                                       Value="@transportUnitDeleteValue"
-                                       Label="Löschen"
-                                       Id="transportUnitDelete" />
-
-                        <LabeledButton ButtonType="ButtonTypes.Button"
-                                       ButtonColor="ButtonColors.Grey"
-                                       Value="@transportUnitCancelValue"
-                                       Label="Abbrechen"
-                                       Id="transportUnitCancel"
-                                       OnSwitchState="@showEdit" />
-                    }
-                    else
-                    {
-
-                        <LabeledButton ButtonType="ButtonTypes.Button"
-                                       ButtonColor="ButtonColors.Turquoise"
-                                       Value="@transportUnitRequestValue"
-                                       Label="Anfordern"
-                                       Id="transportUnitRequest"
-                                       OnSwitchState="@MyOnClick" />
-
-                        <LabeledButton ButtonType="ButtonTypes.Button"
-                                       ButtonColor="ButtonColors.Blue"
-                                       Value="@transportUnitRequestImmediatelyValue"
-                                       Label="Sofort Anfordern"
-                                       Id="transportUnitRequestImmediately" />
-
-                        <LabeledButton ButtonType="ButtonTypes.Button"
-                                       ButtonColor="ButtonColors.Yellow"
-                                       Value="@transportUnitEditValue"
-                                       Label="Bearbeiten"
-                                       Id="transportUnitEdit"
-                                       OnSwitchState="@showEdit" />
-                    }
-
                 </form>
 
             </div>
             <div class="modal-footer">
                 @Footer
+                @if (edit)
+                {
+                    <LabeledButton ButtonType="ButtonTypes.Button"
+                                   ButtonColor="ButtonColors.Green"
+                                   Value="@transportUnitAcceptValue"
+                                   Label="Übernehmen"
+                                   Id="transportUnitAccept" />
+
+                    <LabeledButton ButtonType="ButtonTypes.Button"
+                                   ButtonColor="ButtonColors.Red"
+                                   Value="@transportUnitDeleteValue"
+                                   Label="Löschen"
+                                   Id="transportUnitDelete" />
+
+                    <LabeledButton ButtonType="ButtonTypes.Button"
+                                   ButtonColor="ButtonColors.Grey"
+                                   Value="@transportUnitCancelValue"
+                                   Label="Abbrechen"
+                                   Id="transportUnitCancel"
+                                   OnSwitchState="@showEdit" />
+                }
+                else
+                {
+
+                    <LabeledButton ButtonType="ButtonTypes.Button"
+                                   ButtonColor="ButtonColors.Turquoise"
+                                   Value="@transportUnitRequestValue"
+                                   Label="Anfordern"
+                                   Id="transportUnitRequest"
+                                   OnSwitchState="@MyOnClick" />
+
+                    <LabeledButton ButtonType="ButtonTypes.Button"
+                                   ButtonColor="ButtonColors.Blue"
+                                   Value="@transportUnitRequestImmediatelyValue"
+                                   Label="Sofort Anfordern"
+                                   Id="transportUnitRequestImmediately" />
+
+                    <LabeledButton ButtonType="ButtonTypes.Button"
+                                   ButtonColor="ButtonColors.Yellow"
+                                   Value="@transportUnitEditValue"
+                                   Label="Bearbeiten"
+                                   Id="transportUnitEdit"
+                                   OnSwitchState="@showEdit" />
+                }
             </div>
         </div>
     </div>
@@ -217,8 +218,7 @@
 
     StockSpaceData? modalData;
 
-    [Parameter]
-    public RenderFragment? Title { get; set; }
+    public string Titel;
 
     [Parameter]
     public RenderFragment? Body { get; set; }
@@ -241,8 +241,9 @@
         base.OnInitialized();
     }
 
-    public void Open(StockSpaceData data)
+    public void Open(StockSpaceData data, string titel)
     {
+        Titel = titel;
         modalData = data;
         if (modalData is null)
         {

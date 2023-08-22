@@ -16,31 +16,27 @@
     <HRL.Pages.ModalTest @ref="modal"></HRL.Pages.ModalTest>
     <!-- Darstellung Lagerspiegel -->
     <div id="Lagerspiegel">
-        <!-- Darstellung Reihe 1 -->
-        <button class="Leer" @onclick="() => modal.Open(GetData(1))">0001</button>
-        <button @onclick="@(()=>modalAlt.Show<LagerplatzPopup>("Details Lagerplatz 0000", new ModalParameters().Add(nameof(StockSpaceData), this.GetData(1)), new ModalOptions { Class = "popupLarge" }))" id="Fach0000" class="Leer">0000</button>
-@*        <button @onclick="@(()=>modalAlt.Show<LagerplatzPopup>("Details Lagerplatz 0001", new ModalOptions { Class = "popupLarge" }))" id="Fach0001" class="Belegt">0001</button>*@
-        <button @onclick="@(()=>modalAlt.Show<LagerplatzPopup>("Details Lagerplatz 0002", new ModalOptions { Class = "popupLarge" }))" id="Fach0002" class="Leer">0002</button>
-        <button @onclick="@(()=>modalAlt.Show<LagerplatzPopup>("Details Lagerplatz 0003", new ModalOptions { Class = "popupLarge" }))" id="Fach0003" class="Leer">0003</button>
-        <button @onclick="@(()=>modalAlt.Show<LagerplatzPopup>("Details Lagerplatz 0004", new ModalOptions { Class = "popupLarge" }))" id="Fach0004" class="Leer">0004</button>
-        <button @onclick="@(()=>modalAlt.Show<LagerplatzPopup>("Details Lagerplatz 0005", new ModalOptions { Class = "popupLarge" }))" id="Fach0005" class="Stoerung">0005</button>
-        <button @onclick="@(()=>modalAlt.Show<LagerplatzPopup>("Details Lagerplatz 0006", new ModalOptions { Class = "popupLarge" }))" id="Fach0006" class="Leer">0006</button>
-        <!-- Darstellung Reihe 2 -->
-        <button @onclick="@(()=>modalAlt.Show<LagerplatzPopup>("Details Lagerplatz 0100", new ModalOptions { Class = "popupLarge" }))" id="Fach0100" class="Leer">0100</button>
-        <button @onclick="@(()=>modalAlt.Show<LagerplatzPopup>("Details Lagerplatz 0101", new ModalOptions { Class = "popupLarge" }))" id="Fach0101" class="Stoerung">0101</button>
-        <button @onclick="@(()=>modalAlt.Show<LagerplatzPopup>("Details Lagerplatz 0102", new ModalOptions { Class = "popupLarge" }))" id="Fach0102" class="Leer">0102</button>
-        <button @onclick="@(()=>modalAlt.Show<LagerplatzPopup>("Details Lagerplatz 0103", new ModalOptions { Class = "popupLarge" }))" id="Fach0103" class="Leer">0103</button>
-        <button @onclick="@(()=>modalAlt.Show<LagerplatzPopup>("Details Lagerplatz 0104", new ModalOptions { Class = "popupLarge" }))" id="Fach0104" class="Belegt">0104</button>
-        <button @onclick="@(()=>modalAlt.Show<LagerplatzPopup>("Details Lagerplatz 0105", new ModalOptions { Class = "popupLarge" }))" id="Fach0105" class="Leer">0105</button>
-        <button @onclick="@(()=>modalAlt.Show<LagerplatzPopup>("Details Lagerplatz 0106", new ModalOptions { Class = "popupLarge" }))" id="Fach0106" class="Leer">0106</button>
-        <!-- Darstellung Reihe 3 -->
-        <button @onclick="@(()=>modalAlt.Show<LagerplatzPopup>("Details Lagerplatz 0200", new ModalOptions { Class = "popupLarge" }))" id="Fach0200" class="Leer">0200</button>
-        <button @onclick="@(()=>modalAlt.Show<LagerplatzPopup>("Details Lagerplatz 0201", new ModalOptions { Class = "popupLarge" }))" id="Fach0201" class="Belegt">0201</button>
-        <button @onclick="@(()=>modalAlt.Show<LagerplatzPopup>("Details Lagerplatz 0202", new ModalOptions { Class = "popupLarge" }))" id="Fach0202" class="Leer">0202</button>
-        <button @onclick="@(()=>modalAlt.Show<LagerplatzPopup>("Details Lagerplatz 0203", new ModalOptions { Class = "popupLarge" }))" id="Fach0203" class="Leer">0203</button>
-        <button @onclick="@(()=>modalAlt.Show<LagerplatzPopup>("Details Lagerplatz 0204", new ModalOptions { Class = "popupLarge" }))" id="Fach0204" class="Leer">0204</button>
-        <button @onclick="@(()=>modalAlt.Show<LagerplatzPopup>("Details Lagerplatz 0205", new ModalOptions { Class = "popupLarge" }))" id="Fach0205" class="Stoerung">0205</button>
-        <button @onclick="@(()=>modalAlt.Show<LagerplatzPopup>("Details Lagerplatz 0206", new ModalOptions { Class = "popupLarge" }))" id="Fach0206" class="Leer">0206</button>
+        <button class="Leer" @onclick='() => modal.Open(GetData(1),"0001")'>0001</button>
+        <button class="Leer" @onclick='() => modal.Open(GetData(2),"0002")'>0002</button>
+        <button class="Belegt" @onclick='() => modal.Open(GetData(3),"0003")'>0003</button>
+        <button class="Leer" @onclick='() => modal.Open(GetData(4),"0004")'>0004</button>
+        <button class="Leer" @onclick='() => modal.Open(GetData(5),"0005")'>0005</button>
+        <button class="Leer" @onclick='() => modal.Open(GetData(6),"0006")'>0006</button>
+        <button class="Stoerung" @onclick='() => modal.Open(GetData(7),"0007")'>0007</button>
+        <button class="Leer" @onclick='() => modal.Open(GetData(8),"0001")'>0101</button>
+        <button class="Leer" @onclick='() => modal.Open(GetData(9),"0102")'>0102</button>
+        <button class="Leer" @onclick='() => modal.Open(GetData(10),"0103")'>0103</button>
+        <button class="Leer" @onclick='() => modal.Open(GetData(11),"0104")'>0104</button>
+        <button class="Leer" @onclick='() => modal.Open(GetData(12),"0105")'>0105</button>
+        <button class="Stoerung" @onclick='() => modal.Open(GetData(13),"0106")'>0106</button>
+        <button class="Leer" @onclick='() => modal.Open(GetData(14),"0107")'>0107</button>
+        <button class="Leer" @onclick='() => modal.Open(GetData(15),"0101")'>0201</button>
+        <button class="Belegt" @onclick='() => modal.Open(GetData(16),"0102")'>0202</button>
+        <button class="Leer" @onclick='() => modal.Open(GetData(17),"0203")'>0203</button>
+        <button class="Leer" @onclick='() => modal.Open(GetData(18),"0204")'>0204</button>
+        <button class="Belegt" @onclick='() => modal.Open(GetData(19),"0205")'>0205</button>
+        <button class="Leer" @onclick='() => modal.Open(GetData(20),"0206")'>0206</button>
+        <button class="Leer" @onclick='() => modal.Open(GetData(21),"0207")'>0207</button>
     </div>
 
     <div id="Lagerbestand">
@@ -484,7 +480,6 @@
     </div>*@
 
 @code {
-
     private HRL.Pages.ModalTest modal { get; set; }
 
     protected override async Task OnInitializedAsync()

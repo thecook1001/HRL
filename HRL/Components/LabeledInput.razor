@@ -3,9 +3,9 @@
 @using HRL.Classes;
 
 <div class="form-group">
-    <label for="@Id">@Label:</label>
-    <div class="input-group w-30 h-25 me-2">
-        @if (@InputType == InputTypes.Text || @InputType == InputTypes.Email)
+    <label for="@Id">@Label</label>
+    <div class="input-group w-30 h-25 me-2 mb-2">
+        @if (@InputType == InputTypes.Text)
         {
             <input type="@InputType"
                    id="@Id"
@@ -43,7 +43,6 @@
     {
         Text,
         Number,
-        Email,
         Date,
         Time
     }
@@ -64,18 +63,77 @@
     public string ValueString{
         get
         {
-            if (this.Label == "Status:")
+            switch (this.Label)
             {
-                return this.StockSpaceData.Status;
+                case "Transport-ID:": return this.StockSpaceData.TransportId.ToString();
+
+                case "Status:" : return this.StockSpaceData.Status;
+
+                case "Gewicht:": return this.StockSpaceData.Weight.ToString();
+
+                case "Inhalt:": return this.StockSpaceData.Content;
+
+                case "Einlager Benutzer:": return this.StockSpaceData.PostingUser;
+
+                case "Transport Benutzer:": return this.StockSpaceData.TransportUser;
+
             }
+
             return string.Empty;
         }
         set
         {
-            if (this.Label == "Status:")
+            switch (this.Label)
             {
-                this.StockSpaceData.Status = value;
+                case "Transport-ID:":
+                    {
+                        short i;
+
+                        if (short.TryParse(value, out i))
+                            this.StockSpaceData.TransportId = i;
+                        else
+                            this.StockSpaceData.TransportId = 0;
+                        break;
+                    }
+
+                case "Status:":
+                    {
+                        this.StockSpaceData.Status = value;
+                        break;
+                    }
+
+                case "Gewicht:":
+                    {
+                        float z;
+                        float hanz = this.StockSpaceData.Weight;
+                        if (float.TryParse(value, out z))
+                            this.StockSpaceData.Weight = z;
+                        else
+                        this.StockSpaceData.Weight = 100;
+                        break;
+                    }
+
+                case "Inhalt:": 
+                {
+                this.StockSpaceData.Content = value;
+                break;
+                }
+
+                case "Einlager Benutzer:": 
+                {
+                this.StockSpaceData.PostingUser = value;
+                break;
+                }
+
+                case "Transport Benutzer:": 
+                {
+                this.StockSpaceData.TransportUser = value;
+                break;
+                }
+
+
             }
+
         }
     }
 
@@ -97,6 +155,9 @@
         }
         set
         {
+
+
+
             ValueString = value.ToString();
         }
     }
