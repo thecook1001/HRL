@@ -71,11 +71,17 @@
 
                 case "Gewicht:": return this.StockSpaceData.Weight.ToString();
 
+                case "Priorität:": return this.StockSpaceData.Priority.ToString();
+
                 case "Inhalt:": return this.StockSpaceData.Content;
+
+                case "Anzahl:": return this.StockSpaceData.NumberOfItems.ToString();
 
                 case "Einlager Benutzer:": return this.StockSpaceData.PostingUser;
 
                 case "Transport Benutzer:": return this.StockSpaceData.TransportUser;
+
+                case "Bemerkung:": return this.StockSpaceData.Remarks;
 
             }
 
@@ -109,27 +115,55 @@
                         if (float.TryParse(value, out z))
                             this.StockSpaceData.Weight = z;
                         else
-                        this.StockSpaceData.Weight = 100;
+                            this.StockSpaceData.Weight = 100;
+                        break;
+                    }
+
+                case "Priorität:":
+                    {
+                        short i;
+
+                        if (short.TryParse(value, out i))
+                            this.StockSpaceData.Priority = i;
+                        else
+                            this.StockSpaceData.Priority = 0;
                         break;
                     }
 
                 case "Inhalt:": 
-                {
-                this.StockSpaceData.Content = value;
-                break;
-                }
+                    {
+                        this.StockSpaceData.Content = value;
+                        break;
+                    }
+
+                case "Anzahl:":
+                    {
+                        short i;
+
+                        if (short.TryParse(value, out i))
+                            this.StockSpaceData.NumberOfItems = i;
+                        else
+                            this.StockSpaceData.NumberOfItems = 0;
+                        break;
+                    }
 
                 case "Einlager Benutzer:": 
-                {
-                this.StockSpaceData.PostingUser = value;
-                break;
-                }
+                    {
+                        this.StockSpaceData.PostingUser = value;
+                        break;
+                    }
 
                 case "Transport Benutzer:": 
-                {
-                this.StockSpaceData.TransportUser = value;
-                break;
-                }
+                    {
+                        this.StockSpaceData.TransportUser = value;
+                        break;
+                    }
+
+                case "Bemerkung:":
+                    {
+                        this.StockSpaceData.Remarks = value;
+                        break;
+                    }
 
 
             }

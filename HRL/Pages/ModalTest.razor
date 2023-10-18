@@ -127,10 +127,12 @@
 
                     <div>
                         <LabeledInput Label="Bemerkung:"
+                                      StockSpaceData="@modalData"
                                       InputType="InputTypes.Text"
                                       Id="transportUnitRemark"
                                       ValueString="@modalData.Remarks"
                                       ValueMax="40"
+                                      Required="true"
                                       Readonly="@transportUnitEditValue" />
                     </div>
                 </form>
