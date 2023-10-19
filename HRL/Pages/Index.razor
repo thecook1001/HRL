@@ -4,6 +4,7 @@
 @using HRL.Classes;
 @using HRL.Database;
 @using HRL.Database.ToPlc;
+@using HRL.Database.Local;
 <PageTitle>Index</PageTitle>
 
 <div id="Container">
@@ -16,33 +17,33 @@
     <HRL.Pages.ModalTest @ref="modal"></HRL.Pages.ModalTest>
     <!-- Darstellung Lagerspiegel -->
     <div id="Lagerspiegel">
-        <button class="Leer" @onclick='() => modal.Open(GetData(1),"0001")'>0001</button>
-        <button class="Leer" @onclick='() => modal.Open(GetData(2),"0002")'>0002</button>
-        <button class="Belegt" @onclick='() => modal.Open(GetData(3),"0003")'>0003</button>
-        <button class="Leer" @onclick='() => modal.Open(GetData(4),"0004")'>0004</button>
-        <button class="Leer" @onclick='() => modal.Open(GetData(5),"0005")'>0005</button>
-        <button class="Leer" @onclick='() => modal.Open(GetData(6),"0006")'>0006</button>
-        <button class="Stoerung" @onclick='() => modal.Open(GetData(7),"0007")'>0007</button>
-        <button class="Leer" @onclick='() => modal.Open(GetData(8),"0001")'>0101</button>
-        <button class="Leer" @onclick='() => modal.Open(GetData(9),"0102")'>0102</button>
-        <button class="Leer" @onclick='() => modal.Open(GetData(10),"0103")'>0103</button>
-        <button class="Leer" @onclick='() => modal.Open(GetData(11),"0104")'>0104</button>
-        <button class="Leer" @onclick='() => modal.Open(GetData(12),"0105")'>0105</button>
-        <button class="Stoerung" @onclick='() => modal.Open(GetData(13),"0106")'>0106</button>
-        <button class="Leer" @onclick='() => modal.Open(GetData(14),"0107")'>0107</button>
-        <button class="Leer" @onclick='() => modal.Open(GetData(15),"0101")'>0201</button>
-        <button class="Belegt" @onclick='() => modal.Open(GetData(16),"0102")'>0202</button>
-        <button class="Leer" @onclick='() => modal.Open(GetData(17),"0203")'>0203</button>
-        <button class="Leer" @onclick='() => modal.Open(GetData(18),"0204")'>0204</button>
-        <button class="Belegt" @onclick='() => modal.Open(GetData(19),"0205")'>0205</button>
-        <button class="Leer" @onclick='() => modal.Open(GetData(20),"0206")'>0206</button>
-        <button class="Leer" @onclick='() => modal.Open(GetData(21),"0207")'>0207</button>
+        <button class="@StockStatus(1)" @onclick='() => modal.Open(GetData(1),"0000",0,0,2)'>1</button>
+        <button class="@StockStatus(2)" @onclick='() => modal.Open(GetData(2),"0001",1,0,2)'>2</button>
+        <button class="@StockStatus(3)" @onclick='() => modal.Open(GetData(3),"0002",2,0,2)'>3</button>
+        <button class="@StockStatus(4)" @onclick='() => modal.Open(GetData(4),"0003",3,0,2)'>4</button>
+        <button class="@StockStatus(5)" @onclick='() => modal.Open(GetData(5),"0004",4,0,2)'>5</button>
+        <button class="@StockStatus(6)" @onclick='() => modal.Open(GetData(6),"0005",5,0,2)'>6</button>
+        <button class="@StockStatus(7)" @onclick='() => modal.Open(GetData(7),"0006",6,0,2)'>7</button>
+        <button class="@StockStatus(8)" @onclick='() => modal.Open(GetData(8),"0100",0,0,1)'>8</button>
+        <button class="@StockStatus(9)" @onclick='() => modal.Open(GetData(9),"0101",1,0,1)'>9</button>
+        <button class="@StockStatus(10)" @onclick='() => modal.Open(GetData(10),"0102",2,0,1)'>10</button>
+        <button class="@StockStatus(11)" @onclick='() => modal.Open(GetData(11),"0103",3,0,1)'>11</button>
+        <button class="@StockStatus(12)" @onclick='() => modal.Open(GetData(12),"0104",4,0,1)'>12</button>
+        <button class="@StockStatus(13)" @onclick='() => modal.Open(GetData(13),"0105",5,0,1)'>13</button>
+        <button class="@StockStatus(14)" @onclick='() => modal.Open(GetData(14),"0106",6,0,1)'>14</button>
+        <button class="@StockStatus(15)" @onclick='() => modal.Open(GetData(15),"0200",0,0,0)'>15</button>
+        <button class="@StockStatus(16)" @onclick='() => modal.Open(GetData(16),"0201",1,0,0)'>16</button>
+        <button class="@StockStatus(17)" @onclick='() => modal.Open(GetData(17),"0202",2,0,0)'>17</button>
+        <button class="@StockStatus(18)" @onclick='() => modal.Open(GetData(18),"0203",3,0,0)'>18</button>
+        <button class="@StockStatus(19)" @onclick='() => modal.Open(GetData(19),"0204",4,0,0)'>19</button>
+        <button class="@StockStatus(20)" @onclick='() => modal.Open(GetData(20),"0205",5,0,0)'>20</button>
+        <button class="@StockStatus(21)" @onclick='() => modal.Open(GetData(21),"0206",6,0,0)'>21</button>
     </div>
 
     <div id="Lagerbestand">
         <div class="d-flex justify-content-between px-2">
             <h4 class="text-white">Lagerbestand</h4>
-            <input type="text" placeholder="Filter" class="w-25 h-25 me-2 form-control form-control-sm">
+            @*<input type="text" placeholder="Filter" class="w-25 h-25 me-2 form-control form-control-sm">*@
         </div>
 
         <div class="scrollable">
@@ -57,231 +58,16 @@
                     </tr>
                 </thead>
                 <tbody>
+                @foreach (var stockSpaceData in StockSpaceDatas)
+                {
                     <tr>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
+                        <td>@stockSpaceData.Content</td>
+                        <td>@stockSpaceData.NumberOfItems</td>
+                        <td>@stockSpaceData.TransportDateTime</td>
+                        <td>@stockSpaceData.Remarks</td>
+                        <td>@stockSpaceData.Position</td>
                     </tr>
-                    <tr>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-
+                }
                 </tbody>
             </table>
         </div>
@@ -290,7 +76,7 @@
     <div id="Auftraege">
         <div class="d-flex justify-content-between px-2">
             <h4 class="text-white">Aufträge</h4>
-            <input type="text" placeholder="Filter" class="w-25 h-25 me-2 form-control form-control-sm">
+            @*<input type="text" placeholder="Filter" class="w-25 h-25 me-2 form-control form-control-sm">*@
         </div>
 
         <div class="scrollable">
@@ -298,186 +84,35 @@
                 <thead>
                     <tr>
                         <th>Status</th>
+                        <th>Priorität</th>
                         <th>Artikel</th>
                         <th>Menge</th>
                         <th>Letzte Änderung</th>
                         <th>Bemerkung</th>
                         <th>Position</th>
+                        <th>Entf</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Aktiv</td>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Wartet</td>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Wartet</td>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Wartet</td>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Wartet</td>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Wartet</td>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Wartet</td>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Wartet</td>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Wartet</td>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Wartet</td>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Wartet</td>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Wartet</td>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Wartet</td>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Wartet</td>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Wartet</td>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Wartet</td>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
-                    <tr>
-                        <td>Wartet</td>
-                        <td>Europalette Schokolade</td>
-                        <td>20</td>
-                        <td>15.03.2023</td>
-                        <td>Erdbeere</td>
-                        <td>0104</td>
-                    </tr>
+                    @foreach (var jobsData in JobsDatas)
+                    {
+                        <tr>
+                            <td>@jobsData.Status</td>
+                            <td>@jobsData.Priority</td>
+                            <td>@jobsData.Content</td>
+                            <td>@jobsData.NumberOfItems</td>
+                            <td>@jobsData.TransportDateTime</td>
+                            <td>@jobsData.Remarks</td>
+                            <td>@jobsData.Position</td>
+                            <td> <button type="button" class="btn-close btn-close-white" data-dismiss="modal" aria-label="Close" @onclick="() => DeleteJobEntry(jobsData.Id)"> </button> </td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         </div>
     </div>
 </div>
 
-
-
-
-
-
-
-
-@*    <div id="Datenbank">
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Date</th>
-            <th>Temp. (C)</th>
-            <th>Temp. (F)</th>
-            <th>Summary</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var forecast in forecasts)
-        {
-            <tr>
-                <td>
-                            @forecast.AuftragPositionYP
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-    </div>*@
 
 @code {
     private HRL.Pages.ModalTest modal { get; set; }
@@ -486,13 +121,57 @@
     {
         var stockSpaceData = new StockSpaceData();
         this.StockSpaceDatas = stockSpaceData.GetStockData().ToArray();
+
+        var jobsData = new JobsData();
+        this.JobsDatas = jobsData.GetJobsData().ToArray();
+
+
     }
 
     private StockSpaceData GetData(int Id)
     {
         var stockSpaceData = new StockSpaceData();
-        return stockSpaceData.FindStockData(Id);
+        return stockSpaceData.FindCreateStockData(Id);
+    }
+
+    public void DeleteJobEntry(int id)
+    {
+        using (var connection = new HRLContext())
+        {
+            var jobsData = new JobsData();
+            jobsData.DeleteEntry(id);
+            StateHasChanged();
+            ReloadPage();
+        }
+    }
+
+    public string StockStatus(int id)
+    {
+        using (var connection = new HRLContext())
+        {
+            var stockSpaceData = new StockSpaceData();
+            int result = stockSpaceData.FindStockData(id);
+            if (result == 0)
+            {
+                return "Leer";
+            }
+            else
+            {
+                return "Belegt";
+            }
+        }
+    }
+
+
+    @inject NavigationManager NavigationManager;
+
+    private void ReloadPage()
+    {
+        NavigationManager.NavigateTo("", true);
     }
 
     public StockSpaceData[] StockSpaceDatas { get; set; }
+    public JobsData[] JobsDatas { get; set; }
+
+
 }

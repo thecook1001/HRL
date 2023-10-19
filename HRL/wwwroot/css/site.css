@@ -30,6 +30,7 @@ body {
 
     #Lagerspiegel button {
         color: rgb(255, 255, 255);
+        font-size: large;
         aspect-ratio: 1;
         border: 1px solid #505050;
         display: flex;
@@ -42,12 +43,12 @@ body {
             background-color: rgba(80, 80, 80, 0.751);
         }
 
-        #Lagerspiegel button.Stoerung {
-            background-color: rgba(255, 0, 0, 0.751);
-        }
-
         #Lagerspiegel button.Belegt {
             background-color: rgba(25, 195, 79, 0.751);
+        }
+
+        #Lagerspiegel button.Stoerung {
+            background-color: rgba(255, 0, 0, 0.751);
         }
 
 #Lagerbestand {

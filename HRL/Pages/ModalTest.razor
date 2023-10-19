@@ -3,6 +3,8 @@
 @using HRL.Database;
 @using Microsoft.AspNetCore.Mvc.ViewFeatures
 @using HRL.Components
+@using HRL.Database.ToPlc
+@using HRL.Database.Local
 @using System.Reflection;
 @using static HRL.Components.LabeledInput
 @using static HRL.Components.LabeledButton
@@ -29,7 +31,7 @@
                                           ValueMax="32767"
                                           ValueMin="1"
                                           Required="true"
-                                          Readonly="@transportUnitEditValue" />
+                                          Readonly="@readOnly" />
 
                             <LabeledInput Label="Status:"
                                           StockSpaceData="@modalData"
@@ -37,7 +39,7 @@
                                           Id="TransportUnitStatus"
                                           ValueString="@modalData.Status"
                                           ValueMax="10"
-                                          Readonly="@transportUnitEditValue" />
+                                          Readonly="@readOnly" />
                                           
                             <LabeledInput Label="Gewicht:"
                                           StockSpaceData="@modalData"
@@ -47,7 +49,7 @@
                                           ValueMax="32767"
                                           ValueMin="1"
                                           Required="true"
-                                          Readonly="@transportUnitEditValue"
+                                          Readonly="@readOnly"
                                           Suffix="KG" />
 
                             <LabeledInput Label="Priorität:"
@@ -57,7 +59,7 @@
                                           ValueInt="@modalData.Priority"
                                           ValueMax="99"
                                           ValueMin="0"
-                                          Readonly="@transportUnitEditValue" />
+                                          Readonly="@readOnly" />
 
                             <LabeledInput Label="Inhalt:"
                                           StockSpaceData="@modalData"
@@ -65,7 +67,7 @@
                                           Id="transportUnitContent"
                                           ValueString="@modalData.Content"
                                           ValueMax="10"
-                                          Readonly="@transportUnitEditValue" />
+                                          Readonly="@readOnly" />
 
                             <LabeledInput Label="Anzahl:"
                                           StockSpaceData="@modalData"
@@ -74,7 +76,7 @@
                                           ValueInt="@modalData.NumberOfItems"
                                           ValueMax="32767"
                                           ValueMin="0"
-                                          Readonly="@transportUnitEditValue"
+                                          Readonly="@readOnly"
                                           Suffix="Stück" />
                         </div>
 
@@ -84,14 +86,14 @@
                                           InputType="InputTypes.Date"
                                           Id="transportUnitStorageDate"
                                           ValueDate="@DateOnly.Parse(modalData.PostingDateTime.Date.ToString("yyyy-MM-dd"))"
-                                          Readonly="@transportUnitEditValue" />
+                                          Readonly="@readOnly" />
 
                             <LabeledInput Label="Einlager Uhrzeit:"
                                           StockSpaceData="@modalData"
                                           InputType="InputTypes.Time"
                                           Id="transportUnitStorageTime"
                                           ValueTime="@TimeOnly.FromDateTime(modalData.PostingDateTime)"
-                                          Readonly="@transportUnitEditValue" />
+                                          Readonly="@readOnly" />
 
                             <LabeledInput Label="Einlager Benutzer:"
                                           StockSpaceData="@modalData"
@@ -99,21 +101,21 @@
                                           Id="transportUnitStorageUser"
                                           ValueString="@modalData.PostingUser"
                                           ValueMax="4"
-                                          Readonly="@transportUnitEditValue" />
+                                          Readonly="@readOnly" />
 
                             <LabeledInput Label="Transport Datum:"
                                           StockSpaceData="@modalData"
                                           InputType="InputTypes.Date"
                                           Id="transportUnitTransportDate"
                                           ValueDate="@DateOnly.Parse(modalData.TransportDateTime.Date.ToString("yyyy-MM-dd"))"
-                                          Readonly="@transportUnitEditValue" />
+                                          Readonly="@readOnly" />
 
                             <LabeledInput Label="Transport Uhrzeit:"
                                           StockSpaceData="@modalData"
                                           InputType="InputTypes.Time"
                                           Id="transportUnitTransportTime"
                                           ValueTime="@TimeOnly.FromDateTime(modalData.TransportDateTime)"
-                                          Readonly="@transportUnitEditValue" />
+                                          Readonly="@readOnly" />
 
                             <LabeledInput Label="Transport Benutzer:"
                                           StockSpaceData="@modalData"
@@ -121,7 +123,7 @@
                                           Id="transportUnitTransportUser"
                                           ValueString="@modalData.TransportUser"
                                           ValueMax="4"
-                                          Readonly="@transportUnitEditValue" />
+                                          Readonly="@readOnly" />
                         </div>
                     </div>
 
@@ -133,30 +135,29 @@
                                       ValueString="@modalData.Remarks"
                                       ValueMax="40"
                                       Required="true"
-                                      Readonly="@transportUnitEditValue" />
+                                      Readonly="@readOnly" />
                     </div>
                 </form>
 
             </div>
             <div class="modal-footer">
                 @Footer
-                @if (edit)
+                @if (!readOnly)
                 {
                     <LabeledButton ButtonType="ButtonTypes.Button"
                                    ButtonColor="ButtonColors.Green"
-                                   Value="@transportUnitAcceptValue"
                                    Label="Übernehmen"
-                                   Id="transportUnitAccept" />
+                                   Id="transportUnitAccept"
+                                   OnSwitchState="@Save" />
 
                     <LabeledButton ButtonType="ButtonTypes.Button"
                                    ButtonColor="ButtonColors.Red"
-                                   Value="@transportUnitDeleteValue"
                                    Label="Löschen"
-                                   Id="transportUnitDelete" />
+                                   Id="transportUnitDelete"
+                                   OnSwitchState="@Delete" />
 
                     <LabeledButton ButtonType="ButtonTypes.Button"
                                    ButtonColor="ButtonColors.Grey"
-                                   Value="@transportUnitCancelValue"
                                    Label="Abbrechen"
                                    Id="transportUnitCancel"
                                    OnSwitchState="@showEdit" />
@@ -166,20 +167,18 @@
 
                     <LabeledButton ButtonType="ButtonTypes.Button"
                                    ButtonColor="ButtonColors.Turquoise"
-                                   Value="@transportUnitRequestValue"
                                    Label="Anfordern"
                                    Id="transportUnitRequest"
-                                   OnSwitchState="@MyOnClick" />
+                                   OnSwitchState="@Request" />
 
                     <LabeledButton ButtonType="ButtonTypes.Button"
                                    ButtonColor="ButtonColors.Blue"
-                                   Value="@transportUnitRequestImmediatelyValue"
                                    Label="Sofort Anfordern"
-                                   Id="transportUnitRequestImmediately" />
+                                   Id="transportUnitRequestImmediately"
+                                   OnSwitchState = "@RequestNow" />
 
                     <LabeledButton ButtonType="ButtonTypes.Button"
                                    ButtonColor="ButtonColors.Yellow"
-                                   Value="@transportUnitEditValue"
                                    Label="Bearbeiten"
                                    Id="transportUnitEdit"
                                    OnSwitchState="@showEdit" />
@@ -216,11 +215,14 @@
     public bool transportUnitDeleteValue { get; set; }
     public bool transportUnitAcceptValue { get; set; }
     public bool transportUnitCancelValue { get; set; }
-    public bool edit = false;
+    public bool readOnly = true;
 
     StockSpaceData? modalData;
 
     public string Titel;
+    public short X;
+    public short Y;
+    public short Z;
 
     [Parameter]
     public RenderFragment? Body { get; set; }
@@ -243,10 +245,13 @@
         base.OnInitialized();
     }
 
-    public void Open(StockSpaceData data, string titel)
+    public void Open(StockSpaceData data, string titel, short x, short y, short z)
     {
         Titel = titel;
         modalData = data;
+        X = x;
+        Y = y;
+        Z = z;
         if (modalData is null)
         {
             modalData = new StockSpaceData();
@@ -259,40 +264,122 @@
 
     public void Close()
     {
+        modalDisplay = "none";
+        modalClass = "";
+        showBackdrop = false;
         StateHasChanged();
+        ReloadPage();
+    }
+
+    public void Save(object sender)
+    {
         using (var connect = new HRLContext())
         {
             var stockSpace = connect.Find<StockSpace>(modalData.Id);
             modalData.ToStockSpace(stockSpace);
             connect.SaveChanges();
         }
-        modalDisplay = "none";
-        modalClass = "";
-        showBackdrop = false;
-        StateHasChanged();
+        Close();
     }
 
-    public void MyOnClick(object sender)
+    public void Delete(object sender)
     {
-        if (sender is LabeledButton labeledButton)
+        using (var connect = new HRLContext())
         {
-            labeledButton.SetButtonColor(ButtonColors.Dark);
-            this.StateHasChanged();
-
+            modalData.DeleteEntry(modalData.Id);
+            connect.SaveChanges();
         }
+        Close();
     }
 
     public void showEdit(object sender)
     {
-        if (!edit)
-        {
-            edit = true;
-        }
-        else
-        {
-            edit = false;
-        }
-        this.StateHasChanged();
+        readOnly = !readOnly;
+        StateHasChanged();
 
     }
+
+    //public void Request(object sender)
+    //{
+
+    //    using (var connection = new HRLContext())
+    //    {
+    //        var AuftragAnSpsResult = connection.Find<AuftragAnSps>(1);
+    //        AuftragAnSpsResult.Art = short.Parse(modalData.Status);
+    //        AuftragAnSpsResult.LagerId = modalData.TransportId;
+    //        AuftragAnSpsResult.PositionXP = X;
+    //        AuftragAnSpsResult.PositionYP = Y;
+    //        AuftragAnSpsResult.PositionZP = Z;
+    //        //AuftragAnSpsResult.Gewicht = input feld kann kein float;
+    //        connection.SaveChanges();
+    //        this.StateHasChanged();
+    //        //modalData.DeleteEntry(modalData.Id);
+    //        Close();
+
+    //    }
+    //}
+
+    public void Request(object sender)
+    {
+
+        using (var connection = new HRLContext())
+        {
+            var JobsResult = new Jobs();
+            JobsResult.Status = modalData.Status;
+            JobsResult.Priority = modalData.Priority;
+            JobsResult.Content = modalData.Content;
+            JobsResult.NumberOfItems = modalData.NumberOfItems;
+            JobsResult.TransportDateTime = modalData.TransportDateTime;
+            JobsResult.Remarks = modalData.Remarks;
+            JobsResult.Position = modalData.Position;
+            JobsResult.Art = short.Parse(modalData.Status);
+            JobsResult.LagerId = modalData.TransportId;
+            JobsResult.PositionXP = X;
+            JobsResult.PositionYP = Y;
+            JobsResult.PositionZP = Z;
+            JobsResult.Gewicht = 0;
+
+            connection.Jobs.Add(JobsResult);
+            connection.SaveChanges();
+            modalData.DeleteEntry(modalData.Id);
+            Close();
+
+        }
+    }
+
+    public void RequestNow(object sender)
+    {
+
+        using (var connection = new HRLContext())
+        {
+            var JobsResult = new Jobs();
+            JobsResult.Status = modalData.Status;
+            JobsResult.Priority = 999;
+            JobsResult.Content = modalData.Content;
+            JobsResult.NumberOfItems = modalData.NumberOfItems;
+            JobsResult.TransportDateTime = modalData.TransportDateTime;
+            JobsResult.Remarks = modalData.Remarks;
+            JobsResult.Position = modalData.Position;
+            JobsResult.Art = short.Parse(modalData.Status);
+            JobsResult.LagerId = modalData.TransportId;
+            JobsResult.PositionXP = X;
+            JobsResult.PositionYP = Y;
+            JobsResult.PositionZP = Z;
+            JobsResult.Gewicht = 0;
+
+            connection.Jobs.Add(JobsResult);
+            connection.SaveChanges();
+            modalData.DeleteEntry(modalData.Id);
+            Close();
+
+        }
+    }
+
+    @inject NavigationManager NavigationManager;
+
+    private void ReloadPage()
+    {
+        NavigationManager.NavigateTo("", true);
+    }
+
 }

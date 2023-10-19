@@ -141,26 +141,39 @@ namespace DatenbankInBVLazor
             connection.SaveChanges();
             S7.SetBitAt(ref db7BufferW, 0, 0, AllgemeinAnSpsResult.WatchDog);
             S7.SetBitAt(ref db7BufferW, 0, 1, AllgemeinAnSpsResult.StoerungQuittieren);
-            client.DBWrite(7, 0, 1, db7BufferW);
+            client.DBWrite(7, 0, 2, db7BufferW);
         }
 
         private void AuftragsDatenAnSpsSchreiben(HRLContext connection, S7Client client)
         {
             byte[] db7BufferW = new byte[16];
             var AuftragAnSpsResult = connection.Find<AuftragAnSps>(1);
+            var TransportmaschineVonSpsResult = connection.Find<TransportmaschineVonSps>(1);
             if (AuftragAnSpsResult == null)
             {
                 AuftragAnSpsResult = new AuftragAnSps();
-                connection.AuftraegeAnSps.Add(AuftragAnSpsResult);
+                connection.AuftragAnSps.Add(AuftragAnSpsResult);
             }
             connection.SaveChanges();
-            S7.SetIntAt(db7BufferW, 2, AuftragAnSpsResult.Art);
-            S7.SetIntAt(db7BufferW, 4, AuftragAnSpsResult.LagerId);
-            S7.SetIntAt(db7BufferW, 6, AuftragAnSpsResult.PositionXP);
-            S7.SetIntAt(db7BufferW, 8, AuftragAnSpsResult.PositionYP);
-            S7.SetIntAt(db7BufferW, 10, AuftragAnSpsResult.PositionZP);
-            S7.SetRealAt(db7BufferW, 12, AuftragAnSpsResult.Gewicht);
-            client.DBWrite(7, 2, 16, db7BufferW);
+
+            if (TransportmaschineVonSpsResult.Zustand == 1)
+            {
+                S7.SetIntAt(db7BufferW, 2, AuftragAnSpsResult.Art);
+                S7.SetIntAt(db7BufferW, 4, AuftragAnSpsResult.LagerId);
+                S7.SetIntAt(db7BufferW, 6, AuftragAnSpsResult.PositionXP);
+                S7.SetIntAt(db7BufferW, 8, AuftragAnSpsResult.PositionYP);
+                S7.SetIntAt(db7BufferW, 10, AuftragAnSpsResult.PositionZP);
+                S7.SetRealAt(db7BufferW, 12, AuftragAnSpsResult.Gewicht);
+                client.DBWrite(7, 0, 16, db7BufferW);
+
+                AuftragAnSpsResult.Art = 0;
+                AuftragAnSpsResult.LagerId = 0;
+                AuftragAnSpsResult.PositionXP = 0;
+                AuftragAnSpsResult.PositionYP = 0;
+                AuftragAnSpsResult.PositionZP = 0;
+                //AuftragAnSpsResult.Gewicht = input feld kann kein float;
+                connection.SaveChanges();
+            }
         }
 
         private void DatenLesen(Action<HRLContext,S7Client> verarbeiteDaten, S7Client client)

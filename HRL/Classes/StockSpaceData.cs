@@ -1,7 +1,9 @@
 ﻿using HRL.Database;
 using HRL.Database.FromPlc;
 using HRL.Database.Local;
+using HRL.Database.ToPlc;
 using Microsoft.AspNetCore.Components.Web.Virtualization;
+using Microsoft.Data.SqlClient;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace HRL.Classes
@@ -42,7 +44,7 @@ namespace HRL.Classes
             }
         }
 
-        public StockSpaceData FindStockData(int id)
+        public StockSpaceData FindCreateStockData(int id)
         {
             var result = new StockSpaceData();
             using (var connection = new HRLContext())
@@ -51,13 +53,63 @@ namespace HRL.Classes
                 {
                     
                     var stockSpace = connection.Find<StockSpace>(id);
+                    if (stockSpace == null)
+                    {
+                        stockSpace = new StockSpace();
+                        stockSpace.Id = id;
+                        stockSpace.TransportId = 0;
+                        stockSpace.Position = id;
+                        stockSpace.Position = stockSpace.Position -1;
+                        stockSpace.Status = "0";
+                        stockSpace.Weight = 0;
+                        stockSpace.Priority = 0;
+                        stockSpace.Content = "Artikel Name";
+                        stockSpace.NumberOfItems = 0;
+                        stockSpace.PostingDateTime = DateTime.Now;
+                        stockSpace.PostingUser = "USER";
+                        stockSpace.TransportDateTime = DateTime.Now;
+                        stockSpace.TransportUser = "USER";
+                        stockSpace.Remarks = "Beschreibung";
+
+                        connection.StockSpaces.Add(stockSpace);
+                        connection.SaveChanges();
+                    }
+                    stockSpace = connection.Find<StockSpace>(id);
                     result = stockSpace.ToStockSpaceData();
+                    connection.SaveChanges();
                 }
                 catch (Exception exception)
                 {
                     FehlerMeldung(exception.Message);
+                    FehlerMeldung(exception.InnerException.Message);
                 }
                 return result;
+            }
+        }
+
+        public int FindStockData(int id)
+        {
+            var result = new StockSpaceData();
+            using (var connection = new HRLContext())
+            {
+                try
+                {
+
+                    var stockSpace = connection.Find<StockSpace>(id);
+                    stockSpace = connection.Find<StockSpace>(id);
+                    if (stockSpace == null)
+                    {
+                        return 0;
+                    }
+                    else
+                        return int.Parse(stockSpace.Status);
+                }
+                catch (Exception exception)
+                {
+                    FehlerMeldung(exception.Message);
+                    FehlerMeldung(exception.InnerException.Message);
+                    return 0;
+                }
             }
         }
 
@@ -102,7 +154,8 @@ namespace HRL.Classes
             {
                 try
                 {
-                    connection.Remove(id);
+                    var StockSpaceEntry = connection.Find<StockSpace>(id);
+                    connection.Remove(StockSpaceEntry);
                     connection.SaveChanges();
                 }
                 catch (Exception exception)

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HRL.Migrations
 {
     [DbContext(typeof(HRLContext))]
-    [Migration("20230820211641_InitialCreate")]
+    [Migration("20231018180301_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -24,60 +24,6 @@ namespace HRL.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("HRL.Classes.StockSpaceData", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("NumberOfItems")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Position")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("PostingDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("PostingUser")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Priority")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Remarks")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("TransportDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<short>("TransportId")
-                        .HasColumnType("smallint");
-
-                    b.Property<string>("TransportUser")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<float>("Weight")
-                        .HasColumnType("real");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("StockSpaceData");
-                });
 
             modelBuilder.Entity("HRL.Database.FromPlc.AllgemeinVonSps", b =>
                 {
@@ -198,6 +144,60 @@ namespace HRL.Migrations
                     b.ToTable("FehlerLogs");
                 });
 
+            modelBuilder.Entity("HRL.Database.Local.Jobs", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<short>("Art")
+                        .HasColumnType("smallint");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("Gewicht")
+                        .HasColumnType("real");
+
+                    b.Property<short>("LagerId")
+                        .HasColumnType("smallint");
+
+                    b.Property<int>("NumberOfItems")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Position")
+                        .HasColumnType("int");
+
+                    b.Property<short>("PositionXP")
+                        .HasColumnType("smallint");
+
+                    b.Property<short>("PositionYP")
+                        .HasColumnType("smallint");
+
+                    b.Property<short>("PositionZP")
+                        .HasColumnType("smallint");
+
+                    b.Property<int>("Priority")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Remarks")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("TransportDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Jobs");
+                });
+
             modelBuilder.Entity("HRL.Database.StockSpace", b =>
                 {
                     b.Property<int>("Id")
@@ -298,41 +298,7 @@ namespace HRL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AuftraegeAnSps");
-                });
-
-            modelBuilder.Entity("HRL.Database.ToPlc.AuftragAnSpsHistorie", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<short>("Art")
-                        .HasColumnType("smallint");
-
-                    b.Property<float>("Gewicht")
-                        .HasColumnType("real");
-
-                    b.Property<short>("LagerId")
-                        .HasColumnType("smallint");
-
-                    b.Property<short>("PositionXP")
-                        .HasColumnType("smallint");
-
-                    b.Property<short>("PositionYP")
-                        .HasColumnType("smallint");
-
-                    b.Property<short>("PositionZP")
-                        .HasColumnType("smallint");
-
-                    b.Property<DateTime>("ZeitStempel")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AuftraegeAnSpsHistorie");
+                    b.ToTable("AuftragAnSps");
                 });
 #pragma warning restore 612, 618
         }

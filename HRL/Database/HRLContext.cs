@@ -17,11 +17,10 @@ namespace HRL.Database
         public DbSet<FehlerlisteVonSps> FehlerlistenVonSps { get; set; }
         public DbSet<AllgemeinVonSps> AllgemeinesVonSps { get; set; }
         public DbSet<AllgemeinAnSps> AllgemeinesAnSps { get; set; }
-        public DbSet<AuftragAnSps> AuftraegeAnSps { get; set; }
-        public DbSet<AuftragAnSpsHistorie> AuftraegeAnSpsHistorie { get; set; }
+        public DbSet<AuftragAnSps> AuftragAnSps { get; set; }
         public DbSet<FehlerLog> FehlerLogs { get; set; }
         public DbSet<StockSpace> StockSpaces { get; set; }
-        public DbSet<HRL.Classes.StockSpaceData> StockSpaceData { get; set; }
+        public DbSet<Jobs> Jobs { get; set; }
     }
 }
 
