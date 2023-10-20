@@ -38,7 +38,7 @@
                                           InputType="InputTypes.Text"
                                           Id="TransportUnitStatus"
                                           ValueString="@modalData.Status"
-                                          ValueMax="10"
+                                          ValueMax="2"
                                           Readonly="@readOnly" />
                                           
                             <LabeledInput Label="Gewicht:"
@@ -194,27 +194,9 @@
 }
 
 @code {
-
-    public int TransportUnitIdValue { get; set; } = 1;
-    public string TransportUnitStatusValue { get; set; } = "Test";
+    public string test = "Leer";
     public int TransportUnitWeightValue { get; set; } = 3;
-    public int TransportUnitPriorityValue { get; set; } = 4;
-    public string? TransportUnitContentValue { get; set; } = "";
-    public int TransportUnitCountValue { get; set; } = 5;
-    public DateOnly TransportUnitStorageDateValue { get; set; } = DateOnly.Parse(DateTime.Now.Date.ToString("yyyy-MM-dd"));
-    public TimeOnly TransportUnitStorageTimeValue { get; set; } = TimeOnly.FromDateTime(DateTime.Now);
-    public string? TransportUnitStorageUserValue { get; set; } = "ILRE";
-    public DateOnly TransportUnitTransportDateValue { get; set; } = DateOnly.Parse(DateTime.Now.Date.ToString("yyyy-MM-dd"));
-    public TimeOnly TransportUnitTransportTimeValue { get; set; } = TimeOnly.FromDateTime(DateTime.Now);
-    public string? TransportUnitTransportUserValue { get; set; } = "WADO";
-    public string? TransportUnitRemarkValue { get; set; } = "111222333444555666777888999000";
 
-    public bool transportUnitRequestValue { get; set; }
-    public bool transportUnitRequestImmediatelyValue { get; set; }
-    public bool transportUnitEditValue { get; set; }
-    public bool transportUnitDeleteValue { get; set; }
-    public bool transportUnitAcceptValue { get; set; }
-    public bool transportUnitCancelValue { get; set; }
     public bool readOnly = true;
 
     StockSpaceData? modalData;
@@ -264,6 +246,14 @@
 
     public void Close()
     {
+        if (modalData.Status == "0")
+        {
+            using (var connect = new HRLContext())
+            {
+                modalData.DeleteEntry(modalData.Id);
+                connect.SaveChanges();
+            }
+        }
         modalDisplay = "none";
         modalClass = "";
         showBackdrop = false;
@@ -280,6 +270,11 @@
             connect.SaveChanges();
         }
         Close();
+    }
+
+    public void Status(string status)
+    {
+        modalData.Status = status;
     }
 
     public void Delete(object sender)

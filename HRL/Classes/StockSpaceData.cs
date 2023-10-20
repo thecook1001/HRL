@@ -55,11 +55,11 @@ namespace HRL.Classes
                     var stockSpace = connection.Find<StockSpace>(id);
                     if (stockSpace == null)
                     {
+                        Random rnd = new Random();
                         stockSpace = new StockSpace();
                         stockSpace.Id = id;
-                        stockSpace.TransportId = 0;
+                        stockSpace.TransportId = (short)rnd.Next(1, 32766);
                         stockSpace.Position = id;
-                        stockSpace.Position = stockSpace.Position -1;
                         stockSpace.Status = "0";
                         stockSpace.Weight = 0;
                         stockSpace.Priority = 0;

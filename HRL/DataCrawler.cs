@@ -1,4 +1,5 @@
-﻿using HRL.Database;
+﻿using HRL.Classes;
+using HRL.Database;
 using HRL.Database.FromPlc;
 using HRL.Database.Local;
 using HRL.Database.ToPlc;
@@ -9,6 +10,7 @@ namespace DatenbankInBVLazor
 {
     public class DataCrawler
     {
+        bool JobActiv = false;
         public DataCrawler()
         {
 
@@ -63,6 +65,8 @@ namespace DatenbankInBVLazor
                 }
             }
         }
+
+
 
         private void TransportwagenDatenVonSpsLesen(HRLContext connection, S7Client client)
         {
@@ -146,18 +150,73 @@ namespace DatenbankInBVLazor
 
         private void AuftragsDatenAnSpsSchreiben(HRLContext connection, S7Client client)
         {
-            byte[] db7BufferW = new byte[16];
+            var jobsData = new JobsData();
             var AuftragAnSpsResult = connection.Find<AuftragAnSps>(1);
-            var TransportmaschineVonSpsResult = connection.Find<TransportmaschineVonSps>(1);
-            if (AuftragAnSpsResult == null)
-            {
-                AuftragAnSpsResult = new AuftragAnSps();
-                connection.AuftragAnSps.Add(AuftragAnSpsResult);
-            }
-            connection.SaveChanges();
+            List<JobsData> JobsDatas = jobsData.GetJobsData().ToList();
+            List<JobsData> SortedList = JobsDatas.OrderByDescending(o => o.Priority).ToList();
 
-            if (TransportmaschineVonSpsResult.Zustand == 1)
+            if (SortedList.Count > 0)
             {
+                Console.WriteLine(SortedList[0].Position);
+                Console.WriteLine(SortedList[0].PositionXP);
+                {
+                    AuftragAnSpsResult.Art = 3;
+                    AuftragAnSpsResult.LagerId = SortedList[0].LagerId;
+                    AuftragAnSpsResult.PositionXP = SortedList[0].PositionXP;
+                    AuftragAnSpsResult.PositionYP = SortedList[0].PositionYP;
+                    AuftragAnSpsResult.PositionZP = SortedList[0].PositionZP;
+                    AuftragAnSpsResult.Gewicht = SortedList[0].Gewicht;
+                    connection.SaveChanges();
+
+
+                    byte[] db7BufferW = new byte[16];
+                    var TransportmaschineVonSpsResult = connection.Find<TransportmaschineVonSps>(1);
+                    if (AuftragAnSpsResult == null)
+                    {
+                        AuftragAnSpsResult = new AuftragAnSps();
+                        connection.AuftragAnSps.Add(AuftragAnSpsResult);
+                        connection.SaveChanges();
+                    }
+
+                    if (TransportmaschineVonSpsResult.Zustand == 1)
+                    {
+                        S7.SetIntAt(db7BufferW, 2, AuftragAnSpsResult.Art);
+                        S7.SetIntAt(db7BufferW, 4, AuftragAnSpsResult.LagerId);
+                        S7.SetIntAt(db7BufferW, 6, AuftragAnSpsResult.PositionXP);
+                        S7.SetIntAt(db7BufferW, 8, AuftragAnSpsResult.PositionYP);
+                        S7.SetIntAt(db7BufferW, 10, AuftragAnSpsResult.PositionZP);
+                        S7.SetRealAt(db7BufferW, 12, AuftragAnSpsResult.Gewicht);
+                        client.DBWrite(7, 0, 16, db7BufferW);
+                        JobActiv = true;
+                    }
+                    else if(JobActiv)
+                    {
+                        AuftragAnSpsResult.Art = 0;
+                        AuftragAnSpsResult.LagerId = 0;
+                        AuftragAnSpsResult.PositionXP = 0;
+                        AuftragAnSpsResult.PositionYP = 0;
+                        AuftragAnSpsResult.PositionZP = 0;
+                        AuftragAnSpsResult.Gewicht = 0;
+
+                        var jobsOld = new JobsData();
+                        jobsOld.DeleteEntry(SortedList[0].Id);
+
+                        connection.SaveChanges();
+                        JobActiv = false;
+                    }
+                }
+            }
+            else
+            {
+                AuftragAnSpsResult.Art = 0;
+                AuftragAnSpsResult.LagerId = 0;
+                AuftragAnSpsResult.PositionXP = 0;
+                AuftragAnSpsResult.PositionYP = 0;
+                AuftragAnSpsResult.PositionZP = 0;
+                AuftragAnSpsResult.Gewicht = 0;
+                connection.SaveChanges();
+
+                byte[] db7BufferW = new byte[16];
                 S7.SetIntAt(db7BufferW, 2, AuftragAnSpsResult.Art);
                 S7.SetIntAt(db7BufferW, 4, AuftragAnSpsResult.LagerId);
                 S7.SetIntAt(db7BufferW, 6, AuftragAnSpsResult.PositionXP);
@@ -165,15 +224,10 @@ namespace DatenbankInBVLazor
                 S7.SetIntAt(db7BufferW, 10, AuftragAnSpsResult.PositionZP);
                 S7.SetRealAt(db7BufferW, 12, AuftragAnSpsResult.Gewicht);
                 client.DBWrite(7, 0, 16, db7BufferW);
-
-                AuftragAnSpsResult.Art = 0;
-                AuftragAnSpsResult.LagerId = 0;
-                AuftragAnSpsResult.PositionXP = 0;
-                AuftragAnSpsResult.PositionYP = 0;
-                AuftragAnSpsResult.PositionZP = 0;
-                //AuftragAnSpsResult.Gewicht = input feld kann kein float;
-                connection.SaveChanges();
             }
+
+
+            
         }
 
         private void DatenLesen(Action<HRLContext,S7Client> verarbeiteDaten, S7Client client)
@@ -209,6 +263,7 @@ namespace DatenbankInBVLazor
                 }
             }
         }
+
     }
 }
 

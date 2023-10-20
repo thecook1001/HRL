@@ -10,7 +10,7 @@
 <div id="Container">
 
     <div class="Kopfzeile">
-        Logo
+        <h4 class="text-white">Abschluss Projekt Hochregallager by Rene Illetschko</h4>
     </div>
 
 
@@ -24,7 +24,7 @@
         <button class="@StockStatus(5)" @onclick='() => modal.Open(GetData(5),"0004",4,0,2)'>5</button>
         <button class="@StockStatus(6)" @onclick='() => modal.Open(GetData(6),"0005",5,0,2)'>6</button>
         <button class="@StockStatus(7)" @onclick='() => modal.Open(GetData(7),"0006",6,0,2)'>7</button>
-        <button class="@StockStatus(8)" @onclick='() => modal.Open(GetData(8),"0100",0,0,1)'>8</button>
+        <button class="@StockStatus(8)" @onclick='() => modal.Open(GetData(8),"0100",0,1,1)'>8</button>
         <button class="@StockStatus(9)" @onclick='() => modal.Open(GetData(9),"0101",1,0,1)'>9</button>
         <button class="@StockStatus(10)" @onclick='() => modal.Open(GetData(10),"0102",2,0,1)'>10</button>
         <button class="@StockStatus(11)" @onclick='() => modal.Open(GetData(11),"0103",3,0,1)'>11</button>
@@ -155,9 +155,13 @@
             {
                 return "Leer";
             }
-            else
+            else if (result == 1)
             {
                 return "Belegt";
+            }
+            else
+            {
+                return "Stoerung";
             }
         }
     }

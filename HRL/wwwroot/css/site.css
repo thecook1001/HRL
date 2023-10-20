@@ -17,6 +17,7 @@ body {
     background-color: rgba(80, 80, 80, 0.751);
     padding: 6px;
     grid-column: span 2;
+    text-align: center;
 }
 
 #Lagerspiegel {
