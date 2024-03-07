@@ -153,24 +153,22 @@ namespace DatenbankInBVLazor
             var jobsData = new JobsData();
             var AuftragAnSpsResult = connection.Find<AuftragAnSps>(1);
             List<JobsData> JobsDatas = jobsData.GetJobsData().ToList();
-            List<JobsData> SortedList = JobsDatas.OrderByDescending(o => o.Priority).ToList();
+            //List<JobsData> SortedList = JobsDatas.OrderByDescending(p => p.Priority).ToList();
 
-            if (SortedList.Count > 0)
+            if (JobsDatas.Count > 0)
             {
-                Console.WriteLine(SortedList[0].Position);
-                Console.WriteLine(SortedList[0].PositionXP);
                 {
-                    AuftragAnSpsResult.Art = 3;
-                    AuftragAnSpsResult.LagerId = SortedList[0].LagerId;
-                    AuftragAnSpsResult.PositionXP = SortedList[0].PositionXP;
-                    AuftragAnSpsResult.PositionYP = SortedList[0].PositionYP;
-                    AuftragAnSpsResult.PositionZP = SortedList[0].PositionZP;
-                    AuftragAnSpsResult.Gewicht = SortedList[0].Gewicht;
+                    var TransportmaschineVonSpsResult = connection.Find<TransportmaschineVonSps>(1);
+                    AuftragAnSpsResult.Art = JobsDatas[0].Art;
+                    AuftragAnSpsResult.LagerId = JobsDatas[0].LagerId;
+                    AuftragAnSpsResult.PositionXP = JobsDatas[0].PositionXP;
+                    AuftragAnSpsResult.PositionYP = JobsDatas[0].PositionYP;
+                    AuftragAnSpsResult.PositionZP = JobsDatas[0].PositionZP;
+                    AuftragAnSpsResult.Gewicht = JobsDatas[0].Gewicht;
                     connection.SaveChanges();
 
 
                     byte[] db7BufferW = new byte[16];
-                    var TransportmaschineVonSpsResult = connection.Find<TransportmaschineVonSps>(1);
                     if (AuftragAnSpsResult == null)
                     {
                         AuftragAnSpsResult = new AuftragAnSps();
@@ -198,8 +196,7 @@ namespace DatenbankInBVLazor
                         AuftragAnSpsResult.PositionZP = 0;
                         AuftragAnSpsResult.Gewicht = 0;
 
-                        var jobsOld = new JobsData();
-                        jobsOld.DeleteEntry(SortedList[0].Id);
+                        jobsData.DeleteEntry(JobsDatas[0].Id);
 
                         connection.SaveChanges();
                         JobActiv = false;

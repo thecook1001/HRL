@@ -1,8 +1,10 @@
 ﻿@namespace HRL.Pages
+@inject NavigationManager NavigationManager;
 @using HRL.Classes;
 @using HRL.Database;
 @using Microsoft.AspNetCore.Mvc.ViewFeatures
 @using HRL.Components
+@using HRL.Database.FromPlc
 @using HRL.Database.ToPlc
 @using HRL.Database.Local
 @using System.Reflection;
@@ -160,7 +162,7 @@
                                    ButtonColor="ButtonColors.Grey"
                                    Label="Abbrechen"
                                    Id="transportUnitCancel"
-                                   OnSwitchState="@showEdit" />
+                                   OnSwitchState="@Cancel" />
                 }
                 else
                 {
@@ -194,7 +196,7 @@
 }
 
 @code {
-    public string test = "Leer";
+    public bool justCreated = false;
     public int TransportUnitWeightValue { get; set; } = 3;
 
     public bool readOnly = true;
@@ -272,6 +274,16 @@
         Close();
     }
 
+    public void Save()
+    {
+        using (var connect = new HRLContext())
+        {
+            var stockSpace = connect.Find<StockSpace>(modalData.Id);
+            modalData.ToStockSpace(stockSpace);
+            connect.SaveChanges();
+        }
+    }
+
     public void Status(string status)
     {
         modalData.Status = status;
@@ -290,53 +302,68 @@
     public void showEdit(object sender)
     {
         readOnly = !readOnly;
+        if (modalData.Status == "0")
+        {
+            modalData.Status = "1";
+            justCreated = true;
+            Save();
+        }
         StateHasChanged();
 
     }
 
-    //public void Request(object sender)
-    //{
-
-    //    using (var connection = new HRLContext())
-    //    {
-    //        var AuftragAnSpsResult = connection.Find<AuftragAnSps>(1);
-    //        AuftragAnSpsResult.Art = short.Parse(modalData.Status);
-    //        AuftragAnSpsResult.LagerId = modalData.TransportId;
-    //        AuftragAnSpsResult.PositionXP = X;
-    //        AuftragAnSpsResult.PositionYP = Y;
-    //        AuftragAnSpsResult.PositionZP = Z;
-    //        //AuftragAnSpsResult.Gewicht = input feld kann kein float;
-    //        connection.SaveChanges();
-    //        this.StateHasChanged();
-    //        //modalData.DeleteEntry(modalData.Id);
-    //        Close();
-
-    //    }
-    //}
+    public void Cancel(object sender)
+    {
+        if (justCreated)
+        {
+            modalData.Status = "0";
+            Save();
+            Close();
+        }
+        readOnly = !readOnly;
+        StateHasChanged();
+    }
 
     public void Request(object sender)
     {
 
         using (var connection = new HRLContext())
         {
-            var JobsResult = new Jobs();
-            JobsResult.Status = modalData.Status;
-            JobsResult.Priority = modalData.Priority;
-            JobsResult.Content = modalData.Content;
-            JobsResult.NumberOfItems = modalData.NumberOfItems;
-            JobsResult.TransportDateTime = modalData.TransportDateTime;
-            JobsResult.Remarks = modalData.Remarks;
-            JobsResult.Position = modalData.Position;
-            JobsResult.Art = short.Parse(modalData.Status);
-            JobsResult.LagerId = modalData.TransportId;
-            JobsResult.PositionXP = X;
-            JobsResult.PositionYP = Y;
-            JobsResult.PositionZP = Z;
-            JobsResult.Gewicht = 0;
+            var TransportmaschineVonSpsResult = connection.Find<TransportmaschineVonSps>(1);
+            if (TransportmaschineVonSpsResult.BelegungPhysisch)
+            {
+                var stockSpaceOnRBG = connection.Find<StockSpace>(999);
+                if (stockSpaceOnRBG != null)
+                {
+                    int id = 0;
+                    int Position = 0;
+                    id = modalData.Id;
+                    Position = modalData.Position;
+                    modalData = stockSpaceOnRBG.ToStockSpaceData();
+                    modalData.Id = id;
+                    modalData.Position = Position;
+                    modalData.TransportDateTime = DateTime.Now;
+                    modalData.DeleteEntry(stockSpaceOnRBG.Id);
+                    Save();
+                }
+                CreateJob(3);
+            }
+            else
+            {
+                CreateJob(2);
+                var stockSpaceOnRBG = connection.Find<StockSpace>(999);
+                if (stockSpaceOnRBG == null)
+                {
+                    stockSpaceOnRBG = new StockSpace();
+                    stockSpaceOnRBG = modalData.ToStockSpace();
+                    stockSpaceOnRBG.Id = 999;
+                    stockSpaceOnRBG.TransportDateTime = DateTime.Now;
 
-            connection.Jobs.Add(JobsResult);
-            connection.SaveChanges();
-            modalData.DeleteEntry(modalData.Id);
+                    connection.StockSpaces.Add(stockSpaceOnRBG);
+                    modalData.DeleteEntry(modalData.Id);
+                    connection.SaveChanges();
+                }
+            }
             Close();
 
         }
@@ -347,34 +374,76 @@
 
         using (var connection = new HRLContext())
         {
-            var JobsResult = new Jobs();
-            JobsResult.Status = modalData.Status;
-            JobsResult.Priority = 999;
-            JobsResult.Content = modalData.Content;
-            JobsResult.NumberOfItems = modalData.NumberOfItems;
-            JobsResult.TransportDateTime = modalData.TransportDateTime;
-            JobsResult.Remarks = modalData.Remarks;
-            JobsResult.Position = modalData.Position;
-            JobsResult.Art = short.Parse(modalData.Status);
-            JobsResult.LagerId = modalData.TransportId;
-            JobsResult.PositionXP = X;
-            JobsResult.PositionYP = Y;
-            JobsResult.PositionZP = Z;
-            JobsResult.Gewicht = 0;
+            var TransportmaschineVonSpsResult = connection.Find<TransportmaschineVonSps>(1);
+            if (TransportmaschineVonSpsResult.BelegungPhysisch)
+            {
+                var stockSpaceOnRBG = connection.Find<StockSpace>(999);
+                if (stockSpaceOnRBG != null)
+                {
+                    int id = 0;
+                    int Position = 0;
+                    id = modalData.Id;
+                    Position = modalData.Position;
+                    modalData = stockSpaceOnRBG.ToStockSpaceData();
+                    modalData.Id = id;
+                    modalData.Position = Position;
+                    modalData.TransportDateTime = DateTime.Now;
+                    modalData.DeleteEntry(stockSpaceOnRBG.Id);
+                    Save();
+                }
+                CreateJob(3);
+            }
+            else
+            {
+                CreateJob(2);
+                var stockSpaceOnRBG = connection.Find<StockSpace>(999);
+                if (stockSpaceOnRBG == null)
+                {
+                    stockSpaceOnRBG = new StockSpace();
+                    stockSpaceOnRBG = modalData.ToStockSpace();
+                    stockSpaceOnRBG.Id = 999;
+                    stockSpaceOnRBG.TransportDateTime = DateTime.Now;
 
-            connection.Jobs.Add(JobsResult);
-            connection.SaveChanges();
-            modalData.DeleteEntry(modalData.Id);
+                    connection.StockSpaces.Add(stockSpaceOnRBG);
+                    modalData.DeleteEntry(modalData.Id);
+                    connection.SaveChanges();
+                }
+            }
             Close();
 
         }
     }
 
-    @inject NavigationManager NavigationManager;
+    private void CreateJob(short operation)
+    {
+        Jobs result = new Jobs();
+
+        using (var connection = new HRLContext())
+        {
+            result.Status = modalData.Status;
+            result.Priority = modalData.Priority;
+            result.Content = modalData.Content;
+            result.NumberOfItems = modalData.NumberOfItems;
+            result.TransportDateTime = modalData.TransportDateTime;
+            result.Remarks = modalData.Remarks;
+            result.Position = modalData.Position;
+
+            //Für SPS Relvant
+            result.Art = operation;
+            result.LagerId = modalData.TransportId;
+            result.PositionXP = X;
+            result.PositionYP = Y;
+            result.PositionZP = Z;
+            result.Gewicht = 0;
+
+            connection.Jobs.Add(result);
+            connection.SaveChanges();
+        }
+    }
 
     private void ReloadPage()
     {
         NavigationManager.NavigateTo("", true);
     }
-
+    //Hier habe ich am meisten Zeit verbracht LOL
 }

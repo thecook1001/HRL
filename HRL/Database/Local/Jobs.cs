@@ -30,6 +30,8 @@ namespace HRL.Database.Local
             data.TransportDateTime = this.TransportDateTime;
             data.Remarks = this.Remarks;
             data.Position = this.Position;
+            data.Art = this.Art;
+            data.LagerId = this.LagerId;
             data.PositionXP = this.PositionXP;
             data.PositionYP = this.PositionYP;
             data.PositionZP = this.PositionZP;
