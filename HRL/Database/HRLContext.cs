@@ -10,7 +10,7 @@ namespace HRL.Database
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server = (local)\\SQLEXPRESS; Database = HRL; Integrated Security = true; TrustServerCertificate = True; ");
+            optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS; Database = HRL; Integrated Security = true; TrustServerCertificate = True;");
             //"server=127.0.0.1; database=test; Integrated Security=true; Encrypt=false; TrustServerCertificate=true"
         }
         public DbSet<TransportmaschineVonSps> TransportmaschinenVonSps { get; set; }
